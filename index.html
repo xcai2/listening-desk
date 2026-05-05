@@ -1446,8 +1446,8 @@ main {
         <option value="custom">My Own (Custom)</option>
       </select>
       <div class="notebook-view-toggle">
-        <button id="nb-view-date" class="active">📅 By Date</button>
-        <button id="nb-view-all">全部</button>
+        <button id="nb-view-all" class="active">全部 Chunks</button>
+        <button id="nb-view-date">📅 我的添加</button>
       </div>
       <button class="primary" id="notebook-add-btn">+ Add Chunk</button>
       <button class="primary" id="notebook-export-btn" style="background: transparent; color: var(--ink-2); border: 1px solid var(--line);">⬇ Export JSON</button>
@@ -1565,9 +1565,19 @@ main {
               <div id="fb-list"></div>
             </div>
           </div>
-          <div style="display:flex; gap:10px;">
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
             <button class="btn-primary" id="refl-save">Save Entry</button>
             <button class="btn-secondary" id="refl-check">Check My English</button>
+            <span id="refl-check-status" style="font-family:var(--mono);font-size:11px;color:var(--ink-3);"></span>
+          </div>
+          <div style="margin-top:14px;display:flex;gap:8px;align-items:center;">
+            <input type="password" id="claude-api-key" placeholder="Optional: Anthropic API key for AI feedback"
+              style="flex:1;background:var(--bg-3);border:1px solid var(--line);color:var(--ink);padding:8px 12px;font-family:var(--mono);font-size:12px;"
+              value="${LS.get('listeningdesk:claudekey','')}" />
+            <button class="btn-secondary" style="padding:8px 12px;font-size:11px;" id="save-api-key">Save Key</button>
+          </div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--ink-3);margin-top:4px;letter-spacing:0.05em;">
+            有 API key → AI 逐句分析；无 key → 本地纠错表匹配。Key 只存在浏览器 localStorage，不上传。
           </div>
         </div>
 
@@ -1931,14 +1941,23 @@ function openModal(m) {
     ${m.chunks && m.chunks.length ? `
     <h4>Curated Chunks · 精选语块</h4>
     <table class="chunk-table">
-      ${m.chunks.map((c, i) => `
+      ${m.chunks.map((c, i) => {
+        const ep = (c.phrase || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+        const ee = (c.example || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+        return `
         <tr>
-          <td class="phr">${c.phrase}</td>
+          <td class="phr">
+            ${c.phrase}
+            <button class="tts-btn" style="margin-top:6px;display:block;font-size:11px;" onclick="speakPhrase('${ep}', 0.8, this)">🔊 Phrase</button>
+          </td>
           <td class="mean">${c.meaning}</td>
-          <td class="ex">${c.example || ''}</td>
+          <td class="ex">
+            ${c.example || ''}
+            ${c.example ? `<button class="tts-btn" style="margin-top:6px;display:block;font-size:11px;" onclick="speakPhrase('${ee}', 0.82, this)">🔊 Example</button>` : ''}
+          </td>
           <td><button class="add-btn" data-mat="${m.id}" data-idx="${i}">+ Save</button></td>
-        </tr>
-      `).join('')}
+        </tr>`;
+      }).join('')}
     </table>` : ''}
 
     ${m.category === 'custom' ? `
@@ -2055,6 +2074,7 @@ function renderNotebook() {
   const f = document.getElementById('notebook-filter').value;
   const grid = document.getElementById('notebook-grid');
   grid.innerHTML = '';
+  grid.className = ''; // reset class before each render
 
   if (notebookViewMode === 'date') {
     renderNotebookByDate(grid, q, f);
@@ -2128,9 +2148,8 @@ function renderNotebookAll(grid, q, f) {
     grid.appendChild(el('div', { class: 'empty' }, 'No chunks. Add some from Library or with the + button.'));
     return;
   }
-  const g = el('div', { class: 'notebook-grid' });
-  items.forEach(c => g.appendChild(makeChunkCard(c, !c._materialId)));
-  grid.appendChild(g);
+  grid.className = 'notebook-grid';
+  items.forEach(c => grid.appendChild(makeChunkCard(c, !c._materialId)));
 }
 
 document.getElementById('notebook-search').oninput = renderNotebook;
@@ -2258,6 +2277,11 @@ document.getElementById('refl-save').onclick = () => {
 };
 
 document.getElementById('refl-check').onclick = checkEnglish;
+document.getElementById('save-api-key').onclick = () => {
+  const key = document.getElementById('claude-api-key').value.trim();
+  LS.set('listeningdesk:claudekey', key);
+  toast(key ? 'API key saved — AI mode on' : 'API key cleared');
+};
 
 function renderCorrections() {
   const list = document.getElementById('correction-list');
@@ -2295,30 +2319,44 @@ initAll();
 //  TTS  (Text-to-Speech)
 // ============================================================
 let ttsVoice = null;
-window.speechSynthesis.onvoiceschanged = () => {
-  const voices = window.speechSynthesis.getVoices();
-  ttsVoice = voices.find(v => v.lang === 'en-US' && /samantha|alex|karen|moira|victoria/i.test(v.name)) ||
-             voices.find(v => v.lang === 'en-US') ||
-             voices.find(v => v.lang.startsWith('en'));
-};
+const hasTTS = typeof window !== 'undefined' && 'speechSynthesis' in window;
+if (hasTTS) {
+  const loadVoices = () => {
+    const voices = window.speechSynthesis.getVoices();
+    ttsVoice = voices.find(v => v.lang === 'en-US' && /samantha|alex|karen|moira|victoria/i.test(v.name)) ||
+               voices.find(v => v.lang === 'en-US') ||
+               voices.find(v => v.lang.startsWith('en'));
+  };
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+}
 
-function speakPhrase(text, rate = 0.82, btn) {
-  window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'en-US';
-  utt.rate = rate;
-  if (ttsVoice) utt.voice = ttsVoice;
-  if (btn) {
-    btn.classList.add('playing');
-    utt.onend = () => btn.classList.remove('playing');
-  }
-  window.speechSynthesis.speak(utt);
+function speakPhrase(text, rate, btn) {
+  rate = rate || 0.82;
+  if (!hasTTS) { toast('TTS not supported in this browser'); return; }
+  try {
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.lang = 'en-US';
+      utt.rate = rate;
+      const voices = window.speechSynthesis.getVoices();
+      const v = ttsVoice || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+      if (v) utt.voice = v;
+      if (btn) {
+        btn.classList.add('playing');
+        utt.onend = () => btn.classList.remove('playing');
+        utt.onerror = () => btn.classList.remove('playing');
+      }
+      window.speechSynthesis.speak(utt);
+    }, 80);
+  } catch(e) { console.warn('TTS error:', e); }
 }
 
 // ============================================================
 //  SPEECH RECOGNITION
 // ============================================================
-const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+const SpeechRec = (typeof window !== 'undefined') && (window.SpeechRecognition || window.webkitSpeechRecognition);
 let recInstance = null;
 let isRecording = false;
 
@@ -2381,17 +2419,83 @@ function insertPrompt(text) {
 }
 
 // ============================================================
-//  ENGLISH CHECKER  (against CORRECTION_PATTERNS)
+//  ENGLISH CHECKER  (local patterns + optional Claude API)
 // ============================================================
-function checkEnglish() {
-  const text = document.getElementById('refl-input').value.toLowerCase();
-  const matches = window.__DATA__.CORRECTION_PATTERNS.filter(p =>
-    text.includes(p.wrong.toLowerCase())
-  );
+async function checkEnglish() {
+  const text = document.getElementById('refl-input').value.trim();
+  if (!text) { toast('先写点内容再检查'); return; }
+
+  const statusEl = document.getElementById('refl-check-status');
   const fb = document.getElementById('rec-feedback');
   const list = document.getElementById('fb-list');
+  const apiKey = LS.get('listeningdesk:claudekey', '');
+
+  fb.classList.add('show');
+
+  if (apiKey) {
+    // --- Claude API path ---
+    statusEl.textContent = '🤖 AI 分析中…';
+    list.innerHTML = '<div style="font-size:13px;color:var(--ink-3);font-style:italic;">正在调用 Claude 分析你的英文，请稍候…</div>';
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1024,
+          system: 'You are a concise English coach for a Chinese finance professional learning business English. Analyze the given text and return ONLY valid JSON (no markdown, no explanation outside JSON). Use this exact format: {"corrections":[{"original":"...","better":"...","note":"..."}],"overall":"...","goodPhrases":["..."]}. Keep it to the 3 most important corrections max. Be specific and encouraging.',
+          messages: [{ role: 'user', content: `Analyze this English text written by a Chinese learner:\n\n"${text}"` }]
+        })
+      });
+      if (!resp.ok) throw new Error(`API ${resp.status}`);
+      const data = await resp.json();
+      const raw = data.content[0].text.trim();
+      const json = JSON.parse(raw);
+      statusEl.textContent = '✓ AI 分析完成';
+      let html = '';
+      if (json.corrections && json.corrections.length) {
+        html += json.corrections.map(c => `
+          <div class="fb-correction">
+            <span class="fb-wrong">${c.original}</span>
+            <span style="color:var(--accent);font-family:var(--mono);margin:0 6px;">→</span>
+            <span class="fb-right">${c.better}</span>
+            <div class="fb-note">${c.note}</div>
+          </div>`).join('');
+      } else {
+        html += '<div style="font-size:13px;color:var(--accent-3);">语法和表达都不错！</div>';
+      }
+      if (json.overall) html += `<div style="margin-top:10px;font-size:13px;color:var(--ink-2);border-top:1px dashed var(--line);padding-top:8px;">${json.overall}</div>`;
+      if (json.goodPhrases && json.goodPhrases.length) {
+        html += `<div style="margin-top:8px;font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;">✓ Good phrases</div>`;
+        html += json.goodPhrases.map(p => `<span style="display:inline-block;margin:3px 4px 0 0;padding:2px 8px;background:rgba(138,168,114,0.1);border:1px solid rgba(138,168,114,0.3);color:var(--green);font-size:12px;font-family:var(--mono);">${p}</span>`).join('');
+      }
+      list.innerHTML = html;
+    } catch(e) {
+      statusEl.textContent = '';
+      console.warn('Claude API error:', e);
+      // fallback to local
+      localCheckEnglish(text, list);
+      list.innerHTML = `<div style="font-size:11px;color:var(--red);margin-bottom:8px;">API 调用失败 (${e.message})，切换到本地匹配</div>` + list.innerHTML;
+    }
+  } else {
+    // --- Local pattern matching ---
+    statusEl.textContent = '';
+    localCheckEnglish(text, list);
+  }
+}
+
+function localCheckEnglish(text, list) {
+  const lower = text.toLowerCase();
+  const matches = window.__DATA__.CORRECTION_PATTERNS.filter(p => lower.includes(p.wrong.toLowerCase()));
+  const fb = document.getElementById('rec-feedback');
+  fb.classList.add('show');
   if (matches.length === 0) {
-    list.innerHTML = '<div style="font-size:13px;color:var(--accent-3);">看起来不错！没发现明显的常见错误。</div>';
+    list.innerHTML = '<div style="font-size:13px;color:var(--accent-3);">没发现常见的中式英语错误。如需深度分析，请填入 Anthropic API key。</div>';
   } else {
     list.innerHTML = matches.map(m => `
       <div class="fb-correction">
@@ -2399,10 +2503,8 @@ function checkEnglish() {
         <span style="color:var(--accent);font-family:var(--mono);margin:0 6px;">→</span>
         <span class="fb-right">${m.right}</span>
         <div class="fb-note">${m.note}</div>
-      </div>
-    `).join('');
+      </div>`).join('');
   }
-  fb.classList.add('show');
 }
 
 // ============================================================
@@ -2533,18 +2635,18 @@ function addScenarioLine(scenarioId, lineIdx, btn) {
 // ============================================================
 //  NOTEBOOK  — date-grouped view
 // ============================================================
-let notebookViewMode = 'date'; // 'date' | 'all'
+let notebookViewMode = 'all'; // 'all' | 'date'
 
-document.getElementById('nb-view-date').onclick = () => {
-  notebookViewMode = 'date';
-  document.getElementById('nb-view-date').classList.add('active');
-  document.getElementById('nb-view-all').classList.remove('active');
-  renderNotebook();
-};
 document.getElementById('nb-view-all').onclick = () => {
   notebookViewMode = 'all';
   document.getElementById('nb-view-all').classList.add('active');
   document.getElementById('nb-view-date').classList.remove('active');
+  renderNotebook();
+};
+document.getElementById('nb-view-date').onclick = () => {
+  notebookViewMode = 'date';
+  document.getElementById('nb-view-date').classList.add('active');
+  document.getElementById('nb-view-all').classList.remove('active');
   renderNotebook();
 };
 

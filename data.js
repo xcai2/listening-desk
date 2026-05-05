@@ -22,8 +22,9 @@ const SEED_MATERIALS = [
     duration: "~75 min",
     sources: [
       { label: "Full transcript (Investing.com)", url: "https://www.investing.com/news/transcripts/earnings-call-transcript-microsoft-q3-2026-results-exceed-expectations-stock-dips-93CH-4647426" },
-      { label: "Microsoft Investor Relations (replay + transcript)", url: "https://www.microsoft.com/en-us/Investor/earnings/FY-2026-Q3/press-release-webcast" },
-      { label: "Earnings press release", url: "https://www.microsoft.com/en-us/Investor/earnings/FY-2026-Q3" }
+      { label: "Motley Fool full transcript", url: "https://www.fool.com/earnings/call-transcripts/2026/04/30/microsoft-msft-q3-2026-earnings-call-transcript/" },
+      { label: "Microsoft IR — webcast replay (login may be required)", url: "https://www.microsoft.com/en-us/investor/earnings/FY-2026-Q3/press-release-webcast" },
+      { label: "Seeking Alpha transcript", url: "https://seekingalpha.com/article/4896341-microsoft-corporation-msft-q3-2026-earnings-call-transcript" }
     ],
     chunks: [
       { phrase: "consequential platform shift", meaning: "影响深远的平台变革(Nadella原话)", example: "We are at the beginning of one of the most consequential platform shifts.", scenario: "ai" },
