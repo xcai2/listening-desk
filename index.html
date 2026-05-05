@@ -1317,6 +1317,57 @@ main {
   .correction-item { grid-template-columns: 1fr; gap: 4px; }
   .correction-item .arrow { text-align: left; }
 }
+
+/* ── AI model selector ── */
+.ai-model-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+.ai-model-row label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.ai-model-row select { background: var(--bg-3); border: 1px solid var(--line-2); color: var(--ink); padding: 6px 12px; font-family: var(--mono); font-size: 12px; cursor: pointer; }
+.ai-model-row select:focus { outline: none; border-color: var(--accent); }
+#ai-model-status { font-family: var(--mono); font-size: 11px; color: var(--accent-3); }
+
+/* ── Scenario mode toggle ── */
+.scenario-mode-toggle { display: flex; gap: 8px; margin: 16px 0 0; }
+.scenario-mode-btn { background: var(--bg-3); border: 1px solid var(--line-2); color: var(--ink-3); padding: 8px 18px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; cursor: pointer; transition: all 0.2s; }
+.scenario-mode-btn:hover { color: var(--ink); }
+.scenario-mode-btn.active { color: var(--ink); border-color: var(--accent); background: rgba(232,177,58,0.07); }
+
+/* ── AI chat box (scenario) ── */
+.ai-chat-box { background: var(--bg-2); border: 1px solid var(--line); padding: 20px; margin-top: 16px; }
+.ai-chat-msgs { min-height: 80px; max-height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
+.ai-chat-msg { padding: 12px 16px; }
+.ai-chat-msg.user { background: rgba(232,177,58,0.06); border-left: 3px solid var(--accent); }
+.ai-chat-msg.ai { background: var(--bg-3); border-left: 3px solid var(--accent-3); }
+.ai-chat-role { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+.ai-chat-text { font-size: 14px; line-height: 1.7; color: var(--ink-2); white-space: pre-wrap; }
+.ai-chat-hint { font-size: 13px; color: var(--ink-3); font-style: italic; text-align: center; padding: 28px; }
+.ai-chat-input-row { display: flex; gap: 10px; align-items: flex-start; }
+.ai-chat-input-row textarea { flex: 1; background: var(--bg-3); border: 1px solid var(--line-2); color: var(--ink); padding: 10px 12px; font-family: var(--sans); font-size: 14px; resize: vertical; min-height: 62px; }
+.ai-chat-input-row textarea:focus { outline: none; border-color: var(--accent); }
+.ai-chat-status { font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-top: 6px; min-height: 16px; }
+.ai-chat-clear { font-family: var(--mono); font-size: 11px; padding: 4px 10px; background: transparent; border: 1px solid var(--line-2); color: var(--ink-3); cursor: pointer; margin-top: 8px; }
+.ai-chat-clear:hover { border-color: var(--red); color: var(--red); }
+
+/* ── AI chunk extractor (Add Material) ── */
+.ai-extract-section { background: var(--bg-2); border: 1px solid var(--line); padding: 28px; margin-top: 24px; }
+.ai-extract-section h3 { font-family: var(--serif); font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+.ai-extract-section .lead { color: var(--ink-3); font-size: 13px; margin-bottom: 16px; }
+.ai-extract-section textarea { width: 100%; background: var(--bg-3); border: 1px solid var(--line-2); color: var(--ink); padding: 12px; font-family: var(--mono); font-size: 12px; min-height: 130px; resize: vertical; margin-bottom: 12px; line-height: 1.6; }
+.ai-extract-section textarea:focus { outline: none; border-color: var(--accent); }
+.ai-extract-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.ai-extract-controls select { background: var(--bg-3); border: 1px solid var(--line-2); color: var(--ink); padding: 7px 12px; font-family: var(--mono); font-size: 12px; }
+.extract-phrase-row { background: var(--bg-3); border: 1px solid var(--line); padding: 14px 16px; margin-bottom: 8px; }
+.extract-phrase-row.added { opacity: 0.45; }
+.ep-phrase { font-size: 16px; font-weight: 600; color: var(--accent); letter-spacing: 0.01em; margin-bottom: 3px; }
+.ep-meaning { font-family: var(--mono); font-size: 12px; color: var(--ink-3); margin-bottom: 4px; }
+.ep-example { font-size: 13px; color: var(--ink-2); font-style: italic; }
+.ep-actions { display: flex; gap: 8px; margin-top: 10px; }
+.ep-actions button { font-family: var(--mono); font-size: 11px; padding: 4px 12px; background: transparent; border: 1px solid var(--line-2); color: var(--ink-3); cursor: pointer; transition: all 0.2s; }
+.ep-actions button:hover { border-color: var(--accent); color: var(--accent); }
+.ep-actions button.added { border-color: var(--accent-3); color: var(--accent-3); cursor: default; }
+
+/* ── AI mistakes in 纠错表 ── */
+.mistakes-section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; margin-top: 4px; }
+.mistakes-section-label.preset { color: var(--ink-3); margin-top: 28px; }
 </style>
 </head>
 <body>
@@ -1525,6 +1576,22 @@ main {
         <button class="btn-secondary" id="new-clear">Clear</button>
       </div>
     </div>
+
+    <div class="ai-extract-section">
+      <h3>🤖 AI 提取词块</h3>
+      <div class="lead">粘贴一段转录文字（财报、播客、YouTube字幕），AI 自动提取 5-10 个高价值商务短语，一键存入 Notebook。</div>
+      <textarea id="extract-input" placeholder="粘贴转录文字…&#10;&#10;例如：Our Azure AI business is growing at 130% year-over-year, and we're seeing extraordinary demand signals across enterprise customers. We remain on track to double our overall footprint…"></textarea>
+      <div class="ai-extract-controls">
+        <select id="extract-model">
+          <option value="claude">Claude Sonnet</option>
+          <option value="gpt">GPT-4o</option>
+          <option value="gemini">Gemini 2.5 Flash</option>
+        </select>
+        <button class="btn-secondary" id="extract-btn">提取词块</button>
+        <span id="extract-status" style="font-family:var(--mono);font-size:11px;color:var(--ink-3);"></span>
+      </div>
+      <div id="extract-results"></div>
+    </div>
   </section>
 
   <!-- ============ REFLECTION ============ -->
@@ -1570,14 +1637,14 @@ main {
             <button class="btn-secondary" id="refl-check">Check My English</button>
             <span id="refl-check-status" style="font-family:var(--mono);font-size:11px;color:var(--ink-3);"></span>
           </div>
-          <div style="margin-top:14px;display:flex;gap:8px;align-items:center;">
-            <input type="password" id="claude-api-key" placeholder="Optional: Anthropic API key for AI feedback"
-              style="flex:1;background:var(--bg-3);border:1px solid var(--line);color:var(--ink);padding:8px 12px;font-family:var(--mono);font-size:12px;"
-              value="${LS.get('listeningdesk:claudekey','')}" />
-            <button class="btn-secondary" style="padding:8px 12px;font-size:11px;" id="save-api-key">Save Key</button>
-          </div>
-          <div style="font-family:var(--mono);font-size:10px;color:var(--ink-3);margin-top:4px;letter-spacing:0.05em;">
-            有 API key → AI 逐句分析；无 key → 本地纠错表匹配。Key 只存在浏览器 localStorage，不上传。
+          <div class="ai-model-row">
+            <label>AI 模型</label>
+            <select id="ai-model-select">
+              <option value="claude">Claude Sonnet (Anthropic)</option>
+              <option value="gpt">GPT-4o (OpenAI)</option>
+              <option value="gemini">Gemini 2.5 Flash (Google)</option>
+            </select>
+            <span id="ai-model-status">检测中…</span>
           </div>
         </div>
 
@@ -1635,6 +1702,7 @@ main {
 
 <div class="toast" id="toast">SAVED</div>
 
+<script src="config.js" onerror="window.__CONFIG__={}"></script>
 <script src="data.js"></script>
 <script>
 // ============================================================
@@ -2277,23 +2345,33 @@ document.getElementById('refl-save').onclick = () => {
 };
 
 document.getElementById('refl-check').onclick = checkEnglish;
-document.getElementById('save-api-key').onclick = () => {
-  const key = document.getElementById('claude-api-key').value.trim();
-  LS.set('listeningdesk:claudekey', key);
-  toast(key ? 'API key saved — AI mode on' : 'API key cleared');
-};
 
 function renderCorrections() {
   const list = document.getElementById('correction-list');
   list.innerHTML = '';
+
+  const aiMistakes = LS.get('listeningdesk:mistakes', []);
+  if (aiMistakes.length) {
+    const hdr = el('div', { class: 'mistakes-section-label' });
+    hdr.textContent = `🤖 AI 发现的错误 (${aiMistakes.length})`;
+    list.appendChild(hdr);
+    [...aiMistakes].reverse().forEach(c => {
+      const item = el('div', { class: 'correction-item' });
+      item.innerHTML = `<div class="wrong">${c.original}</div><div class="arrow">→</div><div class="right">${c.better}</div><div class="note">${c.note || ''}</div>`;
+      list.appendChild(item);
+    });
+    const clr = el('button', { class: 'btn-secondary', style: 'font-size:11px;padding:5px 12px;margin:8px 0 4px;' });
+    clr.textContent = '清空 AI 纠错记录';
+    clr.onclick = () => { LS.set('listeningdesk:mistakes', []); renderCorrections(); };
+    list.appendChild(clr);
+  }
+
+  const hdr2 = el('div', { class: 'mistakes-section-label preset' });
+  hdr2.textContent = '📚 常见中式英语纠错表';
+  list.appendChild(hdr2);
   window.__DATA__.CORRECTION_PATTERNS.forEach(c => {
     const item = el('div', { class: 'correction-item' });
-    item.innerHTML = `
-      <div class="wrong">${c.wrong}</div>
-      <div class="arrow">→</div>
-      <div class="right">${c.right}</div>
-      <div class="note">${c.note}</div>
-    `;
+    item.innerHTML = `<div class="wrong">${c.wrong}</div><div class="arrow">→</div><div class="right">${c.right}</div><div class="note">${c.note}</div>`;
     list.appendChild(item);
   });
 }
@@ -2304,6 +2382,8 @@ function renderCorrections() {
 let notebookViewMode = 'all';
 let activeScenarioId = null;
 const scenarioRevealState = {};
+let scenarioAIMode = false;
+let scenarioConversation = [];
 let ttsVoice = null;
 const hasTTS = typeof window !== 'undefined' && 'speechSynthesis' in window;
 const SpeechRec = (typeof window !== 'undefined') && (window.SpeechRecognition || window.webkitSpeechRecognition);
@@ -2321,6 +2401,30 @@ if (hasTTS) {
   loadVoices();
 }
 
+function initConfig() {
+  const cfg = window.__CONFIG__ || {};
+  const models = [];
+  if (cfg.anthropic?.trim()) models.push('Claude');
+  if (cfg.openai?.trim()) models.push('GPT');
+  if (cfg.gemini?.trim()) models.push('Gemini');
+  const statusEl = document.getElementById('ai-model-status');
+  if (statusEl) {
+    if (models.length) {
+      statusEl.textContent = '🟢 Keys: ' + models.join(' · ');
+      statusEl.style.color = 'var(--accent-3)';
+    } else {
+      statusEl.textContent = '⚠ 未找到 Key，使用本地匹配';
+      statusEl.style.color = 'var(--red)';
+    }
+  }
+  const sel = document.getElementById('ai-model-select');
+  if (sel) {
+    if (cfg.anthropic?.trim()) sel.value = 'claude';
+    else if (cfg.openai?.trim()) sel.value = 'gpt';
+    else if (cfg.gemini?.trim()) sel.value = 'gemini';
+  }
+}
+
 function initAll() {
   updateMasthead();
   renderDaily();
@@ -2332,6 +2436,7 @@ function initAll() {
   renderReflections();
   renderCorrections();
   setupRecording();
+  initConfig();
 }
 initAll();
 
@@ -2423,8 +2528,76 @@ function insertPrompt(text) {
 }
 
 // ============================================================
-//  ENGLISH CHECKER  (local patterns + optional Claude API)
+//  UNIFIED AI CALLER  (Claude / GPT / Gemini)
 // ============================================================
+function escAttr(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;'); }
+
+async function callAI(model, systemPrompt, userContentOrMessages) {
+  const cfg = window.__CONFIG__ || {};
+  const isArr = Array.isArray(userContentOrMessages);
+  const msgs = isArr ? userContentOrMessages : [{ role: 'user', content: userContentOrMessages }];
+
+  if (model === 'claude') {
+    const key = (cfg.anthropic || LS.get('listeningdesk:claudekey', '')).trim();
+    if (!key) throw new Error('No Anthropic key in config.js');
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1024, system: systemPrompt, messages: msgs })
+    });
+    if (!resp.ok) { const t = await resp.text(); throw new Error(`Claude ${resp.status}: ${t.slice(0,120)}`); }
+    const data = await resp.json();
+    return data.content[0].text;
+  }
+
+  if (model === 'gpt') {
+    const key = (cfg.openai || '').trim();
+    if (!key) throw new Error('No OpenAI key in config.js');
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+      body: JSON.stringify({ model: 'gpt-4o', max_tokens: 1024, messages: [{ role: 'system', content: systemPrompt }, ...msgs] })
+    });
+    if (!resp.ok) { const t = await resp.text(); throw new Error(`GPT ${resp.status}: ${t.slice(0,120)}`); }
+    const data = await resp.json();
+    return data.choices[0].message.content;
+  }
+
+  if (model === 'gemini') {
+    const key = (cfg.gemini || '').trim();
+    const gmodel = (cfg.geminiModel || 'gemini-2.5-flash').trim();
+    if (!key) throw new Error('No Gemini key in config.js');
+    const contents = msgs.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }));
+    const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${gmodel}:generateContent?key=${key}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ systemInstruction: { parts: [{ text: systemPrompt }] }, contents, generationConfig: { maxOutputTokens: 1024 } })
+    });
+    if (!resp.ok) { const t = await resp.text(); throw new Error(`Gemini ${resp.status}: ${t.slice(0,120)}`); }
+    const data = await resp.json();
+    return data.candidates[0].content.parts[0].text;
+  }
+
+  throw new Error('Unknown model: ' + model);
+}
+
+// ============================================================
+//  ENGLISH CHECKER
+// ============================================================
+function getSelectedModel() {
+  return document.getElementById('ai-model-select')?.value || 'claude';
+}
+
+function hasAnyKey() {
+  const cfg = window.__CONFIG__ || {};
+  return !!(cfg.anthropic?.trim() || cfg.openai?.trim() || cfg.gemini?.trim() || LS.get('listeningdesk:claudekey',''));
+}
+
 async function checkEnglish() {
   const text = document.getElementById('refl-input').value.trim();
   if (!text) { toast('先写点内容再检查'); return; }
@@ -2432,37 +2605,30 @@ async function checkEnglish() {
   const statusEl = document.getElementById('refl-check-status');
   const fb = document.getElementById('rec-feedback');
   const list = document.getElementById('fb-list');
-  const apiKey = LS.get('listeningdesk:claudekey', '');
-
   fb.classList.add('show');
 
-  if (apiKey) {
-    // --- Claude API path ---
+  if (hasAnyKey()) {
+    const model = getSelectedModel();
     statusEl.textContent = '🤖 AI 分析中…';
-    list.innerHTML = '<div style="font-size:13px;color:var(--ink-3);font-style:italic;">正在调用 Claude 分析你的英文，请稍候…</div>';
+    list.innerHTML = '<div style="font-size:13px;color:var(--ink-3);font-style:italic;">分析中，请稍候…</div>';
+    const sys = 'You are a concise English coach for a Chinese finance professional. Analyze the text and return ONLY valid JSON (no markdown): {"corrections":[{"original":"...","better":"...","note":"..."}],"overall":"...","goodPhrases":["..."]}. Max 3 corrections. Be specific and encouraging.';
     try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 1024,
-          system: 'You are a concise English coach for a Chinese finance professional learning business English. Analyze the given text and return ONLY valid JSON (no markdown, no explanation outside JSON). Use this exact format: {"corrections":[{"original":"...","better":"...","note":"..."}],"overall":"...","goodPhrases":["..."]}. Keep it to the 3 most important corrections max. Be specific and encouraging.',
-          messages: [{ role: 'user', content: `Analyze this English text written by a Chinese learner:\n\n"${text}"` }]
-        })
-      });
-      if (!resp.ok) throw new Error(`API ${resp.status}`);
-      const data = await resp.json();
-      const raw = data.content[0].text.trim();
-      const json = JSON.parse(raw);
+      const raw = await callAI(model, sys, `Analyze this English text by a Chinese learner:\n\n"${text}"`);
+      const m = raw.match(/\{[\s\S]*\}/);
+      const json = JSON.parse(m ? m[0] : raw);
       statusEl.textContent = '✓ AI 分析完成';
+
+      // persist mistakes
+      if (json.corrections?.length) {
+        const stored = LS.get('listeningdesk:mistakes', []);
+        json.corrections.forEach(c => {
+          if (!stored.some(x => x.original === c.original)) stored.push({ ...c, at: Date.now() });
+        });
+        LS.set('listeningdesk:mistakes', stored);
+      }
+
       let html = '';
-      if (json.corrections && json.corrections.length) {
+      if (json.corrections?.length) {
         html += json.corrections.map(c => `
           <div class="fb-correction">
             <span class="fb-wrong">${c.original}</span>
@@ -2474,20 +2640,18 @@ async function checkEnglish() {
         html += '<div style="font-size:13px;color:var(--accent-3);">语法和表达都不错！</div>';
       }
       if (json.overall) html += `<div style="margin-top:10px;font-size:13px;color:var(--ink-2);border-top:1px dashed var(--line);padding-top:8px;">${json.overall}</div>`;
-      if (json.goodPhrases && json.goodPhrases.length) {
+      if (json.goodPhrases?.length) {
         html += `<div style="margin-top:8px;font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;">✓ Good phrases</div>`;
         html += json.goodPhrases.map(p => `<span style="display:inline-block;margin:3px 4px 0 0;padding:2px 8px;background:rgba(138,168,114,0.1);border:1px solid rgba(138,168,114,0.3);color:var(--green);font-size:12px;font-family:var(--mono);">${p}</span>`).join('');
       }
       list.innerHTML = html;
     } catch(e) {
       statusEl.textContent = '';
-      console.warn('Claude API error:', e);
-      // fallback to local
+      console.warn('AI error:', e);
       localCheckEnglish(text, list);
-      list.innerHTML = `<div style="font-size:11px;color:var(--red);margin-bottom:8px;">API 调用失败 (${e.message})，切换到本地匹配</div>` + list.innerHTML;
+      list.innerHTML = `<div style="font-size:11px;color:var(--red);margin-bottom:8px;">API 失败 (${e.message})，切换本地匹配</div>` + list.innerHTML;
     }
   } else {
-    // --- Local pattern matching ---
     statusEl.textContent = '';
     localCheckEnglish(text, list);
   }
@@ -2496,10 +2660,9 @@ async function checkEnglish() {
 function localCheckEnglish(text, list) {
   const lower = text.toLowerCase();
   const matches = window.__DATA__.CORRECTION_PATTERNS.filter(p => lower.includes(p.wrong.toLowerCase()));
-  const fb = document.getElementById('rec-feedback');
-  fb.classList.add('show');
-  if (matches.length === 0) {
-    list.innerHTML = '<div style="font-size:13px;color:var(--accent-3);">没发现常见的中式英语错误。如需深度分析，请填入 Anthropic API key。</div>';
+  document.getElementById('rec-feedback').classList.add('show');
+  if (!matches.length) {
+    list.innerHTML = '<div style="font-size:13px;color:var(--accent-3);">没发现常见中式英语错误。可在 config.js 填入 API key 获取 AI 深度分析。</div>';
   } else {
     list.innerHTML = matches.map(m => `
       <div class="fb-correction">
@@ -2537,7 +2700,7 @@ function renderScenarios() {
   const scenarios = window.__DATA__.SPEAKING_SCENARIOS || [];
   sel.innerHTML = scenarios.map(s => `
     <div class="scenario-pick-card ${activeScenarioId === s.id ? 'active' : ''}"
-         onclick="openScenario('${s.id}')">
+         onclick="openScenario('${escAttr(s.id)}')">
       <div class="sp-cat">${categoryLabel(s.category)}</div>
       <div class="sp-title">${s.title}</div>
       <div class="sp-scene">${s.scene.substring(0, 60)}…</div>
@@ -2548,11 +2711,19 @@ function renderScenarios() {
 
 function openScenario(id) {
   activeScenarioId = id;
+  scenarioAIMode = false;
+  scenarioConversation = [];
   if (!scenarioRevealState[id]) {
     const s = (window.__DATA__.SPEAKING_SCENARIOS || []).find(x => x.id === id);
     if (s) scenarioRevealState[id] = new Array(s.lines.length).fill(false);
   }
   renderScenarios();
+}
+
+function setScenarioMode(aiMode) {
+  scenarioAIMode = aiMode;
+  scenarioConversation = [];
+  renderActiveScenario();
 }
 
 function revealLine(scenarioId, idx) {
@@ -2575,6 +2746,52 @@ function renderActiveScenario() {
   const s = scenarios.find(x => x.id === activeScenarioId);
   if (!s) return;
   const revealed = scenarioRevealState[activeScenarioId] || [];
+  const aiRole = s.lines.find(l => !l.isUser)?.role || 'Advisor';
+  const userRole = s.lines.find(l => l.isUser)?.role || 'You';
+
+  const scriptHTML = `
+    <button class="reveal-all-btn" onclick="revealAllLines('${escAttr(s.id)}')">全部显示英文 (Reveal All)</button>
+    <div class="scenario-dialogue">
+      ${s.lines.map((line, i) => `
+        <div class="dialogue-line ${line.isUser ? 'user-line' : 'advisor-line'}">
+          <div class="dialogue-role">${line.role}</div>
+          <div class="dialogue-chinese">${line.chinese}</div>
+          ${revealed[i] ? `
+            <div class="dialogue-english">${line.english}</div>
+            <div class="dialogue-actions">
+              <button class="tts-btn" onclick="speakPhrase('${escAttr(line.english)}', 0.82, this)">🔊 Listen</button>
+              <button class="add-scenario-btn ${isChunkAdded(line.english) ? 'added' : ''}"
+                onclick="addScenarioLine('${escAttr(s.id)}', ${i}, this)">
+                ${isChunkAdded(line.english) ? '✓ Added' : '+ Notebook'}
+              </button>
+            </div>
+          ` : `
+            <div class="dialogue-actions">
+              <button class="reveal-btn" onclick="revealLine('${escAttr(s.id)}', ${i})">点击显示英文 →</button>
+            </div>
+          `}
+        </div>
+      `).join('')}
+    </div>`;
+
+  const msgsHTML = scenarioConversation.length === 0
+    ? `<div class="ai-chat-hint">AI 扮演 ${aiRole} 和你对话。输入你的开场白开始！</div>`
+    : scenarioConversation.map(m => `
+        <div class="ai-chat-msg ${m.type}">
+          <div class="ai-chat-role">${m.type === 'user' ? userRole : aiRole}</div>
+          <div class="ai-chat-text">${m.content}</div>
+        </div>`).join('');
+
+  const aiChatHTML = `
+    <div class="ai-chat-box">
+      <div class="ai-chat-msgs" id="scenario-chat-msgs">${msgsHTML}</div>
+      <div class="ai-chat-input-row">
+        <textarea id="scenario-user-input" placeholder="用英文说你的下一句话…" rows="2"></textarea>
+        <button class="btn-primary" onclick="sendScenarioMessage()">Send →</button>
+      </div>
+      <div class="ai-chat-status" id="scenario-ai-status"></div>
+      ${scenarioConversation.length > 0 ? `<button class="ai-chat-clear" onclick="setScenarioMode(true)">清空对话 Reset</button>` : ''}
+    </div>`;
 
   panel.innerHTML = `
     <div class="scenario-panel">
@@ -2583,31 +2800,54 @@ function renderActiveScenario() {
         <div class="sp-scene-text">${s.scene}</div>
         <div class="kw-list">${s.keywords.map(k => `<span class="kw">${k}</span>`).join('')}</div>
       </div>
-      <button class="reveal-all-btn" onclick="revealAllLines('${s.id}')">全部显示英文 (Reveal All)</button>
-      <div class="scenario-dialogue">
-        ${s.lines.map((line, i) => `
-          <div class="dialogue-line ${line.isUser ? 'user-line' : 'advisor-line'}">
-            <div class="dialogue-role">${line.role}</div>
-            <div class="dialogue-chinese">${line.chinese}</div>
-            ${revealed[i] ? `
-              <div class="dialogue-english">${line.english}</div>
-              <div class="dialogue-actions">
-                <button class="tts-btn" onclick="speakPhrase('${line.english.replace(/'/g, "\\'")}', 0.82, this)">🔊 Listen</button>
-                <button class="add-scenario-btn ${isChunkAdded(line.english) ? 'added' : ''}"
-                  onclick="addScenarioLine('${s.id}', ${i}, this)">
-                  ${isChunkAdded(line.english) ? '✓ Added' : '+ Notebook'}
-                </button>
-              </div>
-            ` : `
-              <div class="dialogue-actions">
-                <button class="reveal-btn" onclick="revealLine('${s.id}', ${i})">点击显示英文 →</button>
-              </div>
-            `}
-          </div>
-        `).join('')}
+      <div class="scenario-mode-toggle">
+        <button class="scenario-mode-btn ${!scenarioAIMode ? 'active' : ''}" onclick="setScenarioMode(false)">📋 剧本练习</button>
+        <button class="scenario-mode-btn ${scenarioAIMode ? 'active' : ''}" onclick="setScenarioMode(true)">🤖 AI 对话</button>
       </div>
-    </div>
-  `;
+      ${scenarioAIMode ? aiChatHTML : scriptHTML}
+    </div>`;
+
+  if (scenarioAIMode) {
+    const msgs = document.getElementById('scenario-chat-msgs');
+    if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    const inp = document.getElementById('scenario-user-input');
+    if (inp) {
+      inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendScenarioMessage(); }
+      });
+    }
+  }
+}
+
+async function sendScenarioMessage() {
+  const inputEl = document.getElementById('scenario-user-input');
+  const userText = inputEl?.value.trim();
+  if (!userText) return;
+
+  const s = (window.__DATA__.SPEAKING_SCENARIOS || []).find(x => x.id === activeScenarioId);
+  if (!s) return;
+
+  scenarioConversation.push({ type: 'user', content: userText });
+  if (inputEl) inputEl.value = '';
+  renderActiveScenario();
+
+  const statusEl = document.getElementById('scenario-ai-status');
+  if (statusEl) statusEl.textContent = '🤖 AI 回应中…';
+
+  const aiRole = s.lines.find(l => !l.isUser)?.role || 'Advisor';
+  const model = getSelectedModel();
+  const sys = `You are ${aiRole} in this business English scenario: "${s.scene}". Keywords: ${s.keywords.join(', ')}. Respond naturally as ${aiRole} in English (1–3 sentences). After your English response, add a brief hint in Chinese on one line starting with "💡 提示：" suggesting what the learner could say next.`;
+
+  const messages = scenarioConversation.map(m => ({ role: m.type === 'user' ? 'user' : 'assistant', content: m.content }));
+  try {
+    const raw = await callAI(model, sys, messages);
+    scenarioConversation.push({ type: 'ai', content: raw.trim() });
+    renderActiveScenario();
+    const msgs = document.getElementById('scenario-chat-msgs');
+    if (msgs) msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) {
+    if (statusEl) statusEl.textContent = `AI 响应失败: ${e.message}`;
+  }
 }
 
 function isChunkAdded(phrase) {
@@ -2619,14 +2859,7 @@ function addScenarioLine(scenarioId, lineIdx, btn) {
   if (!s) return;
   const line = s.lines[lineIdx];
   if (isChunkAdded(line.english)) { toast('Already in notebook'); return; }
-  STATE.customChunks.push({
-    phrase: line.english,
-    meaning: line.chinese,
-    example: line.english,
-    scenario: s.category,
-    _added: Date.now(),
-    _source: s.title
-  });
+  STATE.customChunks.push({ phrase: line.english, meaning: line.chinese, example: line.english, scenario: s.category, _added: Date.now(), _source: s.title });
   saveAll();
   btn.classList.add('added');
   btn.textContent = '✓ Added';
@@ -2687,6 +2920,74 @@ function makeChunkCard(c, isCustom) {
     };
   }
   return card;
+}
+
+// ============================================================
+//  AI CHUNK EXTRACTOR  (Add Material tab)
+// ============================================================
+let __extractedPhrases__ = [];
+
+document.getElementById('extract-btn').onclick = async () => {
+  const text = document.getElementById('extract-input').value.trim();
+  if (!text) { toast('请先粘贴转录文字'); return; }
+  const model = document.getElementById('extract-model').value;
+  const statusEl = document.getElementById('extract-status');
+  const resultsEl = document.getElementById('extract-results');
+  statusEl.textContent = '🤖 提取中…';
+  resultsEl.innerHTML = '';
+  __extractedPhrases__ = [];
+
+  const sys = 'You are a business English vocabulary coach. Extract 5-10 high-value business English phrases or collocations from the given text. Return ONLY valid JSON (no markdown): {"phrases":[{"phrase":"...","meaning":"(简短中文解释，10字以内)","example":"(sentence from text using the phrase)","scenario":"earnings|ai|interview|meeting|daily|business"}]}. Focus on multi-word expressions, collocations, and domain-specific jargon. Avoid single common words.';
+  try {
+    const raw = await callAI(model, sys, text.substring(0, 3000));
+    const m = raw.match(/\{[\s\S]*\}/);
+    const json = JSON.parse(m ? m[0] : raw);
+    __extractedPhrases__ = json.phrases || [];
+    statusEl.textContent = `✓ 提取了 ${__extractedPhrases__.length} 个短语`;
+
+    resultsEl.innerHTML = __extractedPhrases__.map((p, i) => `
+      <div class="extract-phrase-row" id="ep-row-${i}">
+        <div class="ep-phrase">${p.phrase}</div>
+        <div class="ep-meaning">${p.meaning}</div>
+        <div class="ep-example">${p.example || ''}</div>
+        <div class="ep-actions">
+          <button onclick="addExtractedChunk(${i}, this)">+ Add to Notebook</button>
+          <button class="tts-btn" onclick="speakPhrase('${escAttr(p.phrase)}', 0.82, this)">🔊</button>
+        </div>
+      </div>`).join('') +
+      `<button class="btn-primary" style="margin-top:16px;" onclick="addAllExtracted()">全部添加到 Notebook (${__extractedPhrases__.length})</button>`;
+  } catch(e) {
+    statusEl.textContent = `提取失败: ${e.message}`;
+    console.warn('Extract error:', e);
+  }
+};
+
+function addExtractedChunk(idx, btn) {
+  const p = __extractedPhrases__[idx];
+  if (!p) return;
+  if (STATE.customChunks.some(c => c.phrase === p.phrase)) { toast('Already in notebook'); return; }
+  STATE.customChunks.push({ phrase: p.phrase, meaning: p.meaning, example: p.example || p.phrase, scenario: p.scenario || 'business', _added: Date.now(), _source: 'AI Extract' });
+  saveAll();
+  updateMasthead();
+  btn.textContent = '✓ Added';
+  btn.classList.add('added');
+  btn.disabled = true;
+  document.getElementById('ep-row-' + idx)?.classList.add('added');
+  toast('Added to Notebook');
+}
+
+function addAllExtracted() {
+  let count = 0;
+  __extractedPhrases__.forEach((p, i) => {
+    if (!STATE.customChunks.some(c => c.phrase === p.phrase)) {
+      STATE.customChunks.push({ phrase: p.phrase, meaning: p.meaning, example: p.example || p.phrase, scenario: p.scenario || 'business', _added: Date.now(), _source: 'AI Extract' });
+      count++;
+    }
+  });
+  saveAll();
+  updateMasthead();
+  toast(`已添加 ${count} 个词块到 Notebook`);
+  document.getElementById('extract-results').innerHTML = `<div style="font-size:13px;color:var(--accent-3);margin-top:12px;font-family:var(--mono);">✓ ${count} 个词块已存入 Notebook</div>`;
 }
 
 // keyboard nav for shadowing
