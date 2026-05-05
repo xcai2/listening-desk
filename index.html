@@ -1794,6 +1794,7 @@ function categoryLabel(cat) {
     interview: 'Interview Prep',
     business: 'Business Comm',
     daily: 'Daily English',
+    'small-talk': 'Small Talk',
     custom: 'Custom'
   })[cat] || cat;
 }
@@ -2384,7 +2385,10 @@ let activeScenarioId = null;
 const scenarioRevealState = {};
 let scenarioAIMode = false;
 let scenarioConversation = [];
+let scenarioMicInstance = null;
+let isSpeakingScenario = false;
 let ttsVoice = null;
+let __ttsAudio__ = null;
 const hasTTS = typeof window !== 'undefined' && 'speechSynthesis' in window;
 const SpeechRec = (typeof window !== 'undefined') && (window.SpeechRecognition || window.webkitSpeechRecognition);
 let recInstance = null;
@@ -2441,17 +2445,53 @@ function initAll() {
 initAll();
 
 // ============================================================
-//  TTS  (Text-to-Speech)
+//  TTS  — OpenAI TTS-1-HD (nova) when key available, browser fallback
 // ============================================================
-function speakPhrase(text, rate, btn) {
-  rate = rate || 0.82;
+async function speakPhrase(text, rate, btn) {
+  // Stop any currently playing audio first
+  if (__ttsAudio__) { __ttsAudio__.pause(); __ttsAudio__ = null; }
+  if (hasTTS) window.speechSynthesis.cancel();
+
+  const key = (window.__CONFIG__?.openai || '').trim();
+  if (key) {
+    await speakOpenAI(text, btn, key);
+  } else {
+    speakBrowser(text, rate || 0.82, btn);
+  }
+}
+
+async function speakOpenAI(text, btn, key) {
+  if (btn) { btn.classList.add('playing'); btn.disabled = true; }
+  try {
+    const resp = await fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+      body: JSON.stringify({ model: 'tts-1-hd', input: text, voice: 'nova' })
+    });
+    if (!resp.ok) throw new Error(`TTS ${resp.status}`);
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    __ttsAudio__ = audio;
+    const cleanup = () => { URL.revokeObjectURL(url); __ttsAudio__ = null; if (btn) { btn.classList.remove('playing'); btn.disabled = false; } };
+    audio.onended = cleanup;
+    audio.onerror = () => { cleanup(); };
+    audio.play();
+  } catch(e) {
+    console.warn('OpenAI TTS error, falling back to browser:', e);
+    if (btn) { btn.classList.remove('playing'); btn.disabled = false; }
+    speakBrowser(text, 0.82, btn);
+  }
+}
+
+function speakBrowser(text, rate, btn) {
   if (!hasTTS) { toast('TTS not supported in this browser'); return; }
   try {
     window.speechSynthesis.cancel();
     setTimeout(() => {
       const utt = new SpeechSynthesisUtterance(text);
       utt.lang = 'en-US';
-      utt.rate = rate;
+      utt.rate = rate || 0.82;
       const voices = window.speechSynthesis.getVoices();
       const v = ttsVoice || voices.find(vv => vv.lang === 'en-US') || voices.find(vv => vv.lang.startsWith('en'));
       if (v) utt.voice = v;
@@ -2462,7 +2502,7 @@ function speakPhrase(text, rate, btn) {
       }
       window.speechSynthesis.speak(utt);
     }, 80);
-  } catch(e) { console.warn('TTS error:', e); }
+  } catch(e) { console.warn('Browser TTS error:', e); }
 }
 
 // ============================================================
@@ -2786,7 +2826,8 @@ function renderActiveScenario() {
     <div class="ai-chat-box">
       <div class="ai-chat-msgs" id="scenario-chat-msgs">${msgsHTML}</div>
       <div class="ai-chat-input-row">
-        <textarea id="scenario-user-input" placeholder="用英文说你的下一句话…" rows="2"></textarea>
+        <textarea id="scenario-user-input" placeholder="用英文说你的下一句话…（Enter 发送，Shift+Enter 换行）" rows="2"></textarea>
+        <button class="rec-btn" id="scenario-mic-btn" onclick="toggleScenarioMic(this)" title="点击录音，说完自动发送">🎙</button>
         <button class="btn-primary" onclick="sendScenarioMessage()">Send →</button>
       </div>
       <div class="ai-chat-status" id="scenario-ai-status"></div>
@@ -2848,6 +2889,41 @@ async function sendScenarioMessage() {
   } catch(e) {
     if (statusEl) statusEl.textContent = `AI 响应失败: ${e.message}`;
   }
+}
+
+function toggleScenarioMic(btn) {
+  if (!SpeechRec) { toast('浏览器不支持录音，请用 Chrome 或 Edge'); return; }
+  if (isSpeakingScenario) {
+    scenarioMicInstance?.stop();
+    return;
+  }
+  const inputEl = document.getElementById('scenario-user-input');
+  scenarioMicInstance = new SpeechRec();
+  scenarioMicInstance.lang = 'en-US';
+  scenarioMicInstance.continuous = false;
+  scenarioMicInstance.interimResults = false;
+  scenarioMicInstance.onresult = (e) => {
+    const transcript = e.results[0][0].transcript;
+    if (inputEl) inputEl.value = transcript;
+  };
+  scenarioMicInstance.onstart = () => {
+    isSpeakingScenario = true;
+    btn.textContent = '⏹';
+    btn.classList.add('recording');
+  };
+  scenarioMicInstance.onend = () => {
+    isSpeakingScenario = false;
+    btn.textContent = '🎙';
+    btn.classList.remove('recording');
+    const text = document.getElementById('scenario-user-input')?.value.trim();
+    if (text) sendScenarioMessage();
+  };
+  scenarioMicInstance.onerror = () => {
+    isSpeakingScenario = false;
+    btn.textContent = '🎙';
+    btn.classList.remove('recording');
+  };
+  scenarioMicInstance.start();
 }
 
 function isChunkAdded(phrase) {

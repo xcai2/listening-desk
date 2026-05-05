@@ -860,6 +860,194 @@ const SPEAKING_SCENARIOS = [
       { role: '你', chinese: 'NPI按计划推进。预计下个月完成工程验证，PVT预计在Q4初。如果BOM有变更，请尽早通知我们——最后时刻的变更会影响认证时间线。', english: "NPI is on track. We're targeting engineering validation completion next month, with PVT in early Q4. If there are any BOM changes, we need early visibility — last-minute changes would impact the qualification timeline.", isUser: true }
     ]
   },
+  // ── SMALL TALK ──────────────────────────────────────────────
+  {
+    id: 'coffee-run',
+    category: 'small-talk',
+    title: 'Starbucks早高峰 · 偶遇同事',
+    scene: '早上9点，你在公司楼下的Starbucks排队点咖啡，碰到了认识但不太熟的同事 Jamie。你们一起等咖啡的时候随意聊起来。语气轻松自然，就像真实的日常对话。',
+    keywords: ['mobile order', 'usual', 'pick-me-up', 'all-hands', 'reorg', 'catch up', 'heading to', 'barely made it', 'obsessed'],
+    lines: [
+      { role: 'Jamie (同事)', chinese: '哦，你也在这！周一早上真的太难了。', english: "Oh hey, you're here too! Mondays are just... a lot.", isUser: false },
+      { role: '你', chinese: '是啊，我有个8点的会，根本来不及在家喝咖啡。你平时每天都来吗？', english: "Right? I had an 8am so I didn't even have time to brew anything at home. Do you come here every day?", isUser: true },
+      { role: 'Jamie (同事)', chinese: '基本上，这已经是固定流程了。你今天点了什么？', english: "Pretty much — it's become part of my routine. What did you order?", isUser: false },
+      { role: '你', chinese: '燕麦拿铁，少冰——我现在完全离不开这个了。对了，你今天也去全员大会吗？', english: "Iced oat latte, light ice — honestly I'm obsessed at this point. Are you heading to the all-hands today?", isUser: true },
+      { role: 'Jamie (同事)', chinese: '在日历上，但我还没准备好。你听说有什么大消息要宣布吗？', english: "It's on my calendar, but I'm not ready for it. Have you heard anything about what they're announcing?", isUser: false },
+      { role: '你', chinese: '听到一些架构调整的风声，但我也不太确定。我们拿到咖啡之后再好好聊吧。', english: "I heard some rumors about a reorg but I'm not sure. Let's grab our drinks and catch up properly.", isUser: true },
+    ]
+  },
+  {
+    id: 'office-monday',
+    category: 'small-talk',
+    title: '周一早上 · 茶水间闲聊',
+    scene: '周一早上，你在公司茶水间倒咖啡，碰到了你的直属同事 Alex。你们聊起周末过得怎么样和这周的安排。',
+    keywords: ['low-key', 'recharge', 'back-to-back', 'cleared my head', 'ease into', 'swamped', 'survive', 'end of quarter'],
+    lines: [
+      { role: '你', chinese: '周一又来了……Alex，你周末过得怎么样？', english: "Monday again… how was your weekend, Alex?", isUser: true },
+      { role: 'Alex (同事)', chinese: '挺低调的，就待在家里。说真的我真的需要充电一下。你呢？', english: "Pretty low-key, just stayed in. I genuinely needed to recharge. What about you?", isUser: false },
+      { role: '你', chinese: '我周六去爬山了，挺清脑袋的。这周你的日程怎么样？', english: "I went hiking Saturday — it really helped clear my head. What's your week looking like?", isUser: true },
+      { role: 'Alex (同事)', chinese: '惨。周二到周四全是背靠背的会，我都不知道怎么活下来。', english: "Pretty brutal — back-to-back meetings Tuesday through Thursday. I don't know how I'm going to survive.", isUser: false },
+      { role: '你', chinese: '我也一样，季末嘛。我们先想办法缓缓进入这周？', english: "Same, it's end of quarter. Want to figure out a way to ease into the week first?", isUser: true },
+      { role: 'Alex (同事)', chinese: '好主意。你发现新咖啡机好用吗？就靠这个撑过去了。', english: "Good idea. Have you tried the new coffee machine? It's literally the only thing getting me through.", isUser: false },
+    ]
+  },
+  {
+    id: 'after-work-drinks',
+    category: 'small-talk',
+    title: '下班后小酌 · Happy Hour',
+    scene: '项目刚收尾，你和三四个团队成员去附近的酒吧庆祝。气氛轻松，大家聊工作感受、项目收获和接下来的计划。',
+    keywords: ['cheers', 'wrapped', 'burned out', 'in the weeds', 'wind down', 'earned it', 'take a break', 'next chapter'],
+    lines: [
+      { role: 'Sarah (队友)', chinese: '好了，干杯！我们终于把这个项目搞完了！', english: "Alright, cheers! We finally wrapped it.", isUser: false },
+      { role: '你', chinese: '干杯！说真的，上周我都快撑不住了。', english: "Cheers! Honestly, I was so burned out last week.", isUser: true },
+      { role: 'Tom (队友)', chinese: '最后冲刺那段真的很紧张。你觉得客户会满意吗？', english: "The final sprint was intense. Do you think the client will be happy?", isUser: false },
+      { role: '你', chinese: '应该会的。我们交付的东西比他们期望的要好。就是最后几天有点太深陷进去了。', english: "I think so — we delivered more than they expected. It just got really in the weeds the last few days.", isUser: true },
+      { role: 'Sarah (队友)', chinese: '接下来你有什么计划？你打算休息一下吗？', english: "What are you doing next? Are you planning to take a break?", isUser: false },
+      { role: '你', chinese: '我想下周请两天假，好好喘口气，然后就开始新项目了。我们真的太需要今晚这个了。', english: "I'm thinking of taking two days off next week to wind down, then it's straight into the next one. We definitely earned this tonight.", isUser: true },
+      { role: 'Tom (队友)', chinese: '同意！说到下一个项目，有没有听说什么消息？', english: "Absolutely! Speaking of next steps, have you heard anything about what's coming up?", isUser: false },
+    ]
+  },
+  {
+    id: 'netflix-chat',
+    category: 'small-talk',
+    title: '午餐时间 · 聊最近追的剧',
+    scene: '午饭时间，你和同事 Mia 聊最近在看什么剧，互相推荐，用英文表达对剧情和角色的感受。语气热情随意。',
+    keywords: ['binge', 'hooked', 'plot twist', 'cliffhanger', 'character development', 'slow burn', 'obsessed', 'recommend', 'spoiler', 'in shock'],
+    lines: [
+      { role: '同事 (Mia)', chinese: '你最近在追什么剧？周末给我推荐一个。', english: "What are you watching lately? I need something for the weekend.", isUser: false },
+      { role: '你', chinese: '我最近在刷 The Bear，完全停不下来。你看过吗？', english: "I just started The Bear and I'm completely hooked. Have you seen it?", isUser: true },
+      { role: '同事 (Mia)', chinese: '没，但一直听人说！是那种可以一口气刷完的那种吗？', english: "No, but I keep hearing about it! Is it the kind of show you can binge?", isUser: false },
+      { role: '你', chinese: '是，每集节奏很快，根本不会无聊。不过我不想剧透，你自己去看。', english: "Definitely — the pacing is fast, it never drags. I don't want to spoil it though, you just have to watch.", isUser: true },
+      { role: '同事 (Mia)', chinese: '好，今晚就开始。我刚看完 Succession 大结局，太需要一个新坑了。', english: "Okay, starting it tonight. I just finished the Succession finale and I need something to fill the void.", isUser: false },
+      { role: '你', chinese: '哦天哪，Succession 大结局太炸了对吧？那个反转我完全没预料到。', english: "Oh my god, the Succession finale was insane, right? That plot twist — I did not see it coming.", isUser: true },
+      { role: '同事 (Mia)', chinese: '对对！我看完之后整个人都不好了，在沙发上发了半小时呆。The Bear 就是我下个坑了，谢谢！', english: "Totally! I was in shock for like an hour after, just sitting on my couch processing it. Okay, The Bear is next — thanks for the rec!", isUser: false },
+    ]
+  },
+  {
+    id: 'gym-chat',
+    category: 'small-talk',
+    title: '健身房 · 和旁边的同事聊起来',
+    scene: '你在公司健身房用跑步机，旁边的同事 Chris 开始和你搭话，聊健身习惯和生活方式。',
+    keywords: ['routine', 'sore', 'strength training', 'cardio', 'hit a plateau', 'consistent', 'form', 'offset', 'stamina', 'lifestyle change'],
+    lines: [
+      { role: 'Chris (同事)', chinese: '嘿，你是最近才开始来的吗？我以前好像没见过你。', english: "Hey, are you new here? I don't think I've seen you before.", isUser: false },
+      { role: '你', chinese: '对，我大概三周前才开始的，下班后来跑步。你来很久了吗？', english: "Yeah, I just started about three weeks ago — I come after work. Have you been coming long?", isUser: true },
+      { role: 'Chris (同事)', chinese: '差不多半年了，已经成习惯了。你有具体的目标吗？', english: "About six months now — it's become part of my routine. Do you have specific goals?", isUser: false },
+      { role: '你', chinese: '主要是弥补久坐，顺便提高体能。我工作基本上都是坐着，得找个方式平衡一下。你是偏有氧还是力量训练？', english: "Mainly to offset how sedentary my job is and build up my stamina. I sit all day so I need to balance it out. Are you more into cardio or strength training?", isUser: true },
+      { role: 'Chris (同事)', chinese: '力量训练为主，有氧辅助。其实我一开始也只是跑步，后来发现力量训练让我感觉好多了。你有没有考虑试试？', english: "Mostly strength with some cardio. Honestly I started out just running too, but strength training made a way bigger difference in how I feel. Have you thought about adding it in?", isUser: false },
+      { role: '你', chinese: '想过，但不知道从哪开始。我担心姿势不对受伤，你有什么建议吗？', english: "I have, but I don't know where to start. I'm a bit worried about form — I really don't want to get injured.", isUser: true },
+    ]
+  },
+  {
+    id: 'airport-delay',
+    category: 'daily',
+    title: '机场 · 航班延误处理',
+    scene: '你在机场准备搭乘去纽约的航班，发现延误3小时。你有一个转机，现在肯定赶不上了。你需要和地勤沟通改签，并了解补偿。',
+    keywords: ['delayed', 'connecting flight', 'missed connection', 'rebook', 'compensation', 'voucher', 'standby', 'direct flight', 'itinerary', 'inconvenience'],
+    lines: [
+      { role: '你', chinese: '你好，我的航班显示延误3小时，但我有一个转机去波士顿，现在肯定赶不上了。', english: "Hi, my flight is showing a three-hour delay, but I have a connecting flight to Boston that I'm definitely going to miss.", isUser: true },
+      { role: '地勤 (Agent)', chinese: '非常抱歉带来不便。让我调出您的行程。可以给我看一下登机牌吗？', english: "I'm so sorry for the inconvenience. Let me pull up your itinerary — could I see your boarding pass?", isUser: false },
+      { role: '你', chinese: '给您。我的波士顿转机是下午4点，我必须赶到，有个重要的客户会议。', english: "Here. My Boston connection is at 4pm and I really need to make it — I have an important client meeting.", isUser: true },
+      { role: '地勤 (Agent)', chinese: '明白了。您有两个选择：我们可以帮您改签今晚的波士顿直飞，或者把您加进下一班纽约的候补名单，再看看能不能赶上转机。', english: "I see. We have two options: I can rebook you on a direct flight to Boston tonight, or I can put you on standby for the next New York departure and see if you can still connect.", isUser: false },
+      { role: '你', chinese: '直飞最好。今晚最早的是几点？另外，延误有没有什么补偿？', english: "Direct would be ideal. What's the earliest one tonight? And is there any compensation for this delay?", isUser: true },
+      { role: '地勤 (Agent)', chinese: '今晚5:45有一班直飞波士顿，我可以帮您改签。关于补偿，因为是天气原因，没有现金赔偿，但可以给您一张15美元的餐饮代金券。', english: "There's a direct to Boston at 5:45pm that I can put you on. As for compensation, since it's weather-related we can't offer a cash refund, but I can issue a $15 meal voucher.", isUser: false },
+      { role: '你', chinese: '5:45我接受。但15美元感觉有点少，这个延误可能让我损失一个客户。能不能看看里程积分补偿，或者升舱的可能性？', english: "I'll take the 5:45. But $15 feels minimal given I may lose a client over this. Is there any possibility of a miles compensation or an upgrade?", isUser: true },
+    ]
+  },
+  // ── INTERVIEW / CAREER ──────────────────────────────────────
+  {
+    id: 'fpa-interview',
+    category: 'interview',
+    title: 'FP&A面试 · 高级财务分析师',
+    scene: '你在面试一家科技公司的 Senior FP&A 职位。面试官考察你的财务分析能力、预测方法和与业务部门合作的经验。回答使用STAR格式。',
+    keywords: ['variance analysis', 'business partnering', 'forecast accuracy', 'driver-based', 'P&L', 'sensitivity analysis', 'headcount', 'EBITDA', 'scenario planning', 'flash report'],
+    lines: [
+      { role: '面试官', chinese: '能走我看一下你做过的最复杂的预测分析项目吗？', english: "Can you walk me through the most complex forecasting project you've worked on?", isUser: false },
+      { role: '你', chinese: '当然。在上一家公司，我负责为全公司五个业务单元建立一个基于驱动因素的P&L预测模型。每个业务单元的收入驱动因素差异很大，所以我需要和各团队密切合作来确认假设，再做敏感性分析来测试关键变量的影响。最终我们的预测准确率提高了12个百分点。', english: "Sure. At my last company, I built a driver-based P&L forecast model covering five business units. Each unit had very different revenue drivers, so I had to work closely with each business team to validate assumptions and then run sensitivity analysis on the key variables. We ended up improving forecast accuracy by 12 percentage points.", isUser: true },
+      { role: '面试官', chinese: '你是怎么做业务伙伴关系的？怎么让业务团队配合你做预测？', english: "How do you approach business partnering? How do you get business teams to engage on forecasting?", isUser: false },
+      { role: '你', chinese: '我的方法是先理解他们的目标，而不是从财务角度施压。我会月度和业务负责人对齐，把财务指标翻译成他们的业务语言——比如把人力成本说成人均产出。让他们觉得这些数字是他们自己的，不是财务部门在审计他们。', english: "My approach is to start with their goals, not a finance agenda. I run monthly syncs with business leads and translate financial metrics into their language — framing headcount cost as productivity per employee, for example. The goal is to make them feel ownership over the numbers, not that finance is auditing them.", isUser: true },
+      { role: '面试官', chinese: '有没有一次你的预测严重偏差，你是怎么处理的？', english: "Tell me about a time your forecast was significantly off and how you handled it.", isUser: false },
+      { role: '你', chinese: '有。我们Q2收入预测低估了一个大客户的提前采购，结果超出了12%。我的应对方式：第一，立即做偏差分析找根本原因；第二，在月末Flash Report里第一时间向CFO说明，而不是等正式月度汇报；第三，把这个客户的采购规律加入了后续的预测驱动因素。我从这件事学到的是，早预警永远比事后解释重要。', english: "Yes. Our Q2 revenue forecast underestimated a large customer's pull-forward behavior and we came in 12% above plan. My response: I immediately ran a variance analysis to identify the root cause, proactively communicated to the CFO in the monthly flash rather than waiting for the formal review, and updated our forecasting drivers to capture that customer's buying pattern going forward. The lesson was that early flagging always beats explaining after the fact.", isUser: true },
+    ]
+  },
+  {
+    id: 'salary-negotiation',
+    category: 'interview',
+    title: '薪资谈判 · 和HR谈offer条件',
+    scene: '你收到了一家公司 Senior Analyst 职位的offer，薪资比期望低了约15%。你正在和HR做后续谈判，希望争取更好的待遇。',
+    keywords: ['market rate', 'total comp', 'base salary', 'signing bonus', 'equity', 'band', 'benchmark', 'bridge the gap', 'flexibility', 'net-30'],
+    lines: [
+      { role: 'HR (Jessica)', chinese: '嗨，我们很高兴给你发了offer，想知道你的想法怎么样？', english: "Hi! We're really excited to have extended the offer — what are your initial thoughts?", isUser: false },
+      { role: '你', chinese: '我对这个职位和公司的方向都很感兴趣。不过在base salary这块，我希望可以进一步探讨。', english: "I'm genuinely excited about the role and the company's direction. That said, I was hoping we could discuss the base salary further.", isUser: true },
+      { role: 'HR (Jessica)', chinese: '能说说你的期望范围吗？', english: "Can you share what you were expecting?", isUser: false },
+      { role: '你', chinese: '根据我做的市场调研，和我这个经验level的行业均值，我期望的base大概是X。我想确认你们在这个职级的薪资带宽上是否有灵活空间。', english: "Based on my research and the market benchmarks for this level and experience, I was targeting a base closer to X. I wanted to check whether there's any flexibility within the band for this role.", isUser: true },
+      { role: 'HR (Jessica)', chinese: '我理解。这个职级有一定弹性，但可能无法完全达到那个数字。你对整体total comp的看法呢，包括签字费和股权？', english: "I understand. There is some flexibility within the band, though we may not be able to reach that exact number. How do you feel about the total comp picture, including signing bonus and equity?", isUser: false },
+      { role: '你', chinese: '我很看重长期发展，所以股权对我很重要。如果base调整有上限，能不能考虑在签字费或者额外股权上弥补一下差距？', english: "I'm focused on the long term, so equity is definitely meaningful to me. If there's a ceiling on base, would it be possible to bridge the gap through a higher signing bonus or additional equity?", isUser: true },
+      { role: 'HR (Jessica)', chinese: '这是一个合理的思路，我去内部确认一下，明天给你答复。', english: "That's a reasonable approach — let me check internally and I'll get back to you by tomorrow.", isUser: false },
+    ]
+  },
+  {
+    id: 'performance-review',
+    category: 'interview',
+    title: '年度绩效面谈 · 和上司复盘成绩',
+    scene: '你在和直属经理 David 做年度绩效评审，讨论今年的成绩、改进点和明年的晋升路径。',
+    keywords: ['exceeded expectations', 'areas for growth', 'visibility', 'promotion path', 'stretch goal', 'storytelling', 'take ownership', 'development plan', 'workstream', 'high-impact'],
+    lines: [
+      { role: 'David (经理)', chinese: '我们来聊聊今年。从你的角度看，你觉得自己最有价值的贡献是哪几件？', english: "Let's get into it. From your perspective, what do you feel were your strongest contributions this year?", isUser: false },
+      { role: '你', chinese: '我觉得最有影响力的是两件事：一是主导了Q2预测模型的重建，显著提高了准确率；二是在Q3预算审查中主动识别了一个1.2M的成本节约机会。两件事都是我主动提出来的，不是被分配的。', english: "I'd say the two highest-impact things were: leading the Q2 forecasting model rebuild, which meaningfully improved accuracy; and proactively identifying a 1.2M cost saving opportunity during the Q3 budget review. Both were things I initiated rather than being assigned.", isUser: true },
+      { role: 'David (经理)', chinese: '都说到点上了。我想给你一些建设性的反馈：你的分析能力是一流的，但在向高管汇报时，storytelling还有成长空间——让数字背后的逻辑更清晰。', english: "Those are exactly the things I wanted to highlight. I do want to offer some constructive feedback: your analytical skills are top-notch, but there's room to improve your storytelling when presenting to senior leadership — making the narrative behind the numbers clearer.", isUser: false },
+      { role: '你', chinese: '谢谢这个反馈，这正是我自己也意识到的。我今年已经在有意识地改进，明年想把这块做得更系统化。你觉得有没有具体的项目可以给我更多接触高层的机会？', english: "Thank you for that — it's actually something I've been aware of myself. I've been working on it this year and want to be more intentional about it next year. Are there specific projects where I could get more senior leadership visibility?", isUser: true },
+      { role: 'David (经理)', chinese: '有。Q1我们有一个CFO级别的战略预算项目，我打算让你主导其中一个工作流。', english: "Yes, actually. We have a CFO-level strategic budget project in Q1 and I'm planning to put you in charge of one of the workstreams.", isUser: false },
+      { role: '你', chinese: '这正是我需要的，非常感谢。我也想聊聊晋升路径——按现在的发展轨迹，你觉得我大概需要多长时间可以准备好走到下一个level？', english: "That's exactly what I need — thank you. I also wanted to ask about promotion trajectory. Based on where I am now, what's your read on the timeline for me to be ready for the next level?", isUser: true },
+    ]
+  },
+  // ── BUSINESS ────────────────────────────────────────────────
+  {
+    id: 'budget-review',
+    category: 'earnings',
+    title: 'Q3财务汇报 · 向CFO汇报业绩与预测',
+    scene: '你作为FP&A负责人，在CFO的月度业绩审查会上汇报Q3实际结果和Q4预测，解释关键偏差并给出缓解方案。',
+    keywords: ['unfavorable variance', 'headcount', 'opex', 'top-line', 'gross margin', 'reforecast', 'burn rate', 'operating leverage', 'key assumption', 'mitigation'],
+    lines: [
+      { role: 'CFO', chinese: '好，先看Q3实际结果。收入端有什么关键偏差需要说明？', english: "Let's start with Q3 actuals. Walk me through the key revenue variances.", isUser: false },
+      { role: '你', chinese: 'Q3收入比预算低了3.2M，主要两个原因：一是一个大客户的交付推迟到了Q4，大约2M；二是APAC区域的新签比预期慢，差1.2M。两块在Q4都有部分回收空间。', english: "Q3 came in 3.2M below budget. The two main drivers: a large customer delivery pushed into Q4 — approximately 2M — and a slower-than-expected new logo ramp in APAC, about 1.2M. Both are partially recoverable in Q4.", isUser: true },
+      { role: 'CFO', chinese: '毛利率呢？我看到有一个不利偏差。', english: "What happened to gross margin? I'm seeing an unfavorable variance.", isUser: false },
+      { role: '你', chinese: '毛利率比计划低了1.8个百分点。两个驱动因素：一是项目空档期的工程师闲置成本没有被吸收；二是云服务单位成本高于预算。Q4我们会针对这两块做优化，但压力会持续到年底。', english: "Gross margin was 1.8 points below plan — two drivers: unabsorbed engineering costs during the project gap, and cloud unit costs running above budget. We're addressing both in Q4, but there will be continued margin pressure through year-end.", isUser: true },
+      { role: 'CFO', chinese: '你对Q4预测有多大信心？关键假设是什么？', english: "How confident are you in the Q4 forecast? What are the key assumptions?", isUser: false },
+      { role: '你', chinese: '核心假设有三个：大客户交付在Q4按时完成；APAC新签恢复到正常节奏；团队利用率在11月前回到85%以上。如果前两个假设成立，我对Q4数字有比较高的信心。APAC是最大的变量。', english: "Three key assumptions: the large customer delivery closes in Q4 as planned; APAC new logo pace normalizes; and team utilization recovers above 85% before November. If the first two hold, I'm reasonably confident in the Q4 number. APAC remains the biggest variable.", isUser: true },
+    ]
+  },
+  {
+    id: 'vendor-negotiation',
+    category: 'business',
+    title: '供应商谈判 · 年度合同续签',
+    scene: '你代表公司和一家关键零部件供应商 TechParts Ltd. 谈年度合同续签。目标是争取更好的价格、更短的交期和更灵活的付款条款。',
+    keywords: ['unit price', 'volume discount', 'lead time', 'payment terms', 'net-45', 'sole-source', 'preferred vendor', 'escalation clause', 'floor', 'strategic partnership'],
+    lines: [
+      { role: 'TechParts 代表', chinese: '感谢今天的会议。我们希望续签合同，提议在现有价格基础上上调5%。', english: "Thank you for meeting today. We'd like to renew the contract — we're proposing a 5% price increase from current levels.", isUser: false },
+      { role: '你', chinese: '我们非常重视和TechParts的合作，但5%的涨价对我们来说很难消化。我们面临的市场竞争压力很大。能解释一下主要的成本驱动因素吗？', english: "We value our partnership with TechParts, but a 5% increase is difficult for us to absorb given the competitive pricing pressure we're facing. Can you walk us through the main cost drivers behind this?", isUser: true },
+      { role: 'TechParts 代表', chinese: '主要是原材料成本上涨8%，加上运输压力。我们已经内部消化了一部分，5%是我们能给到的最低限了。', english: "Our primary drivers are raw material costs up 8% and logistics pressure. We've absorbed part of it internally — the 5% is the floor we can realistically offer.", isUser: false },
+      { role: '你', chinese: '我理解你们的成本压力。如果我们承诺在今年基础上增加20%的采购量，能不能把涨价控制在2%以内，或者给一个基于量的阶梯折扣？', english: "I understand your cost pressures. If we commit to a 20% volume increase over last year, would you consider capping the increase at 2%, or offering a tiered volume discount?", isUser: true },
+      { role: 'TechParts 代表', chinese: '这个采购量承诺对我们很有价值。我可以把这个方案带回去内部讨论，看看能不能做到3%。', english: "The volume commitment is meaningful for us — let me take this back internally. I think we can potentially land at 3%.", isUser: false },
+      { role: '你', chinese: '3%我们可以认真考虑。但我还想谈谈交期和付款条件——能不能把标准交期从12周缩短到8周？另外大批量订单希望从Net-30改到Net-45。', english: "3% is worth discussing. I also want to address lead time and payment terms — can we work toward reducing standard lead time from 12 to 8 weeks? And we'd like Net-45 on large volume orders versus the current Net-30.", isUser: true },
+    ]
+  },
+  {
+    id: 'presentation-qa',
+    category: 'business',
+    title: '会议汇报 · 演示后被VP追问',
+    scene: '你刚完成一个市场进入策略的汇报，现在进入Q&A。听众包括VP和高级经理，问题很直接，有些带有挑战性。',
+    keywords: ['go-to-market', 'market sizing', 'assumption', 'pushback', 'ROI', 'competitive landscape', 'validate', 'pilot', 'timeline', 'planning baseline'],
+    lines: [
+      { role: 'VP (Sarah)', chinese: '谢谢汇报。我想挑战一下你的市场规模假设——数据来源是什么？', english: "Thanks for the presentation. I want to push back on your market sizing — what are the data sources?", isUser: false },
+      { role: '你', chinese: '市场规模来自三个来源：Gartner 2025年的报告、我们内部历史数据的外推、以及对三个目标客户的访谈验证。我承认存在一定不确定性，这也是为什么第12页提供了保守情景的分析。', english: "The market sizing draws from three sources: Gartner's 2025 report, extrapolation from our internal historical data, and interviews with three target customers for validation. I'll acknowledge there's uncertainty here — which is why I included the conservative scenario analysis on slide 12.", isUser: true },
+      { role: 'Senior Manager (Tom)', chinese: '竞争格局那页，你有没有考虑到X公司？他们刚宣布进入这个市场。', english: "On the competitive landscape — did you factor in Company X? They just announced they're entering this space.", isUser: false },
+      { role: '你', chinese: '有，这是我们完成初始分析之后才知道的信息。X公司进入这个市场，从一定程度上验证了我们判断这个市场有价值的逻辑。我认为我们的差异化优势在于现有客户关系的深度和系统集成能力，这形成了足够的护城河。', english: "Yes, this became known after our initial analysis. X entering actually validates our thesis that the market opportunity is real. Our differentiation is in the depth of our existing customer relationships and our integration advantage — I believe that creates a sufficient moat.", isUser: true },
+      { role: 'VP (Sarah)', chinese: '你的ROI预测是18个月，我觉得太乐观了。如果我说应该是24个月，你怎么说？', english: "Your ROI projection is 18 months — I think that's optimistic. If I said 24 months, what would you say?", isUser: false },
+      { role: '你', chinese: '24个月在保守假设下是合理的，我认同。18个月的前提是客户迁移速度和团队全员到位，这两个都存在执行风险。我建议我们用24个月作为内部规划基准，同时设定清晰的里程碑来追踪实际落地速度与预测的差距。', english: "24 months is reasonable under conservative assumptions and I'd agree that's the prudent planning number. The 18-month case assumes customer migration speed and full team capacity — both carry execution risk. I'd recommend we use 24 months as our internal planning baseline and set clear milestones to track actual adoption velocity against forecast.", isUser: true },
+    ]
+  },
+  // ── AI / TECH ────────────────────────────────────────────────
   {
     id: 'ai-semiconductor',
     category: 'ai',
