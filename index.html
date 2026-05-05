@@ -2299,8 +2299,28 @@ function renderCorrections() {
 }
 
 // ============================================================
-//  INIT
+//  INIT  (variables that render functions need must be here)
 // ============================================================
+let notebookViewMode = 'all';
+let activeScenarioId = null;
+const scenarioRevealState = {};
+let ttsVoice = null;
+const hasTTS = typeof window !== 'undefined' && 'speechSynthesis' in window;
+const SpeechRec = (typeof window !== 'undefined') && (window.SpeechRecognition || window.webkitSpeechRecognition);
+let recInstance = null;
+let isRecording = false;
+
+if (hasTTS) {
+  const loadVoices = () => {
+    const voices = window.speechSynthesis.getVoices();
+    ttsVoice = voices.find(v => v.lang === 'en-US' && /samantha|alex|karen|moira|victoria/i.test(v.name)) ||
+               voices.find(v => v.lang === 'en-US') ||
+               voices.find(v => v.lang.startsWith('en'));
+  };
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+}
+
 function initAll() {
   updateMasthead();
   renderDaily();
@@ -2318,19 +2338,6 @@ initAll();
 // ============================================================
 //  TTS  (Text-to-Speech)
 // ============================================================
-let ttsVoice = null;
-const hasTTS = typeof window !== 'undefined' && 'speechSynthesis' in window;
-if (hasTTS) {
-  const loadVoices = () => {
-    const voices = window.speechSynthesis.getVoices();
-    ttsVoice = voices.find(v => v.lang === 'en-US' && /samantha|alex|karen|moira|victoria/i.test(v.name)) ||
-               voices.find(v => v.lang === 'en-US') ||
-               voices.find(v => v.lang.startsWith('en'));
-  };
-  window.speechSynthesis.onvoiceschanged = loadVoices;
-  loadVoices();
-}
-
 function speakPhrase(text, rate, btn) {
   rate = rate || 0.82;
   if (!hasTTS) { toast('TTS not supported in this browser'); return; }
@@ -2341,7 +2348,7 @@ function speakPhrase(text, rate, btn) {
       utt.lang = 'en-US';
       utt.rate = rate;
       const voices = window.speechSynthesis.getVoices();
-      const v = ttsVoice || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+      const v = ttsVoice || voices.find(vv => vv.lang === 'en-US') || voices.find(vv => vv.lang.startsWith('en'));
       if (v) utt.voice = v;
       if (btn) {
         btn.classList.add('playing');
@@ -2356,9 +2363,6 @@ function speakPhrase(text, rate, btn) {
 // ============================================================
 //  SPEECH RECOGNITION
 // ============================================================
-const SpeechRec = (typeof window !== 'undefined') && (window.SpeechRecognition || window.webkitSpeechRecognition);
-let recInstance = null;
-let isRecording = false;
 
 function setupRecording() {
   const toggleBtn = document.getElementById('rec-toggle');
@@ -2526,8 +2530,6 @@ document.querySelectorAll('.refl-tab-btn').forEach(btn => {
 // ============================================================
 //  SPEAKING SCENARIOS
 // ============================================================
-let activeScenarioId = null;
-const scenarioRevealState = {};
 
 function renderScenarios() {
   const sel = document.getElementById('scenario-selector');
@@ -2635,7 +2637,6 @@ function addScenarioLine(scenarioId, lineIdx, btn) {
 // ============================================================
 //  NOTEBOOK  — date-grouped view
 // ============================================================
-let notebookViewMode = 'all'; // 'all' | 'date'
 
 document.getElementById('nb-view-all').onclick = () => {
   notebookViewMode = 'all';
