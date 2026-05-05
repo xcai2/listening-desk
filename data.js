@@ -778,5 +778,103 @@ const CORRECTION_PATTERNS = [
   { wrong: "I am free this Friday", right: "I've got Friday open / I'm wide open Friday", note: "more conversational" }
 ];
 
+// ============================================================
+//  SPEAKING SCENARIOS  — 场景口语练习
+// ============================================================
+const SPEAKING_SCENARIOS = [
+  {
+    id: 'beauty-foundation',
+    category: 'daily',
+    title: '美妆柜台 · 买粉底液',
+    scene: '你是一位旅客，在高端美妆店寻找一款适合干皮的粉底液。你想要透亮效果，不想要哑光或卡粉。',
+    keywords: ['foundation', 'coverage', 'matte', 'dewy', 'cakey', 'swatch', 'shade', 'freebies', 'samples'],
+    lines: [
+      { role: '你 (旅客)', chinese: '你好。我想找一款遮瑕力比较好的粉底液。', english: "Hi. I'm looking for a foundation with good coverage.", isUser: true },
+      { role: '柜员', chinese: '没问题。你想要那种哑光的，还是透亮一点的妆效？', english: "Sure thing. Are you looking for a matte finish or something more dewy?", isUser: false },
+      { role: '你 (旅客)', chinese: '最好是透亮的。我的皮肤比较干，怕卡粉。', english: "Definitely dewy. I have dry skin, so I'm worried about it getting cakey.", isUser: true },
+      { role: '柜员', chinese: '明白。那我建议你试试这款。需要我帮你试个色吗？', english: "I see. In that case, I recommend this one. Do you want to do a swatch?", isUser: false },
+      { role: '你 (旅客)', chinese: '好啊。我想要最自然的色号，不要太白的。', english: "Yes, please. I'm looking for a shade that's natural, nothing too pale.", isUser: true },
+      { role: '柜员', chinese: '没问题。你觉得这个颜色怎么样？', english: "No problem. How does this color look to you?", isUser: false },
+      { role: '你 (旅客)', chinese: '挺好的。另外，这个有赠品或者小样吗？', english: "It looks great. Also, do you have any freebies or samples with this?", isUser: true }
+    ]
+  },
+  {
+    id: 'beauty-lipstick',
+    category: 'daily',
+    title: '美妆柜台 · 买口红',
+    scene: '你在美妆店找适合日常的口红，喜欢奶茶色/豆沙色，但担心显色效果。顺便也问了一下眼影盘。',
+    keywords: ['everyday lipstick', 'sheer balm', 'pigment', 'dusty rose', 'washed out', 'satin finish', 'swatch', 'pigmentation', 'palette', 'fallout', 'blends like a dream', 'natural light'],
+    lines: [
+      { role: '你 (旅客)', chinese: '嗯，我想找一支适合日常涂的口红。', english: "Hey, I'm looking for an everyday lipstick.", isUser: true },
+      { role: '柜员', chinese: '好哒！你是想要润唇膏那种质感的，还是显色度高一点的？', english: "For sure! Are you looking for a sheer balm or something with more pigment?", isUser: false },
+      { role: '你 (旅客)', chinese: '想要稍微显色一点的。我挺喜欢奶茶色（豆沙色），但担心涂上显得没精神。', english: "Something with a bit more color. I really like this dusty rose shade, but I'm afraid it might make me look washed out.", isUser: true },
+      { role: '柜员', chinese: '不会，这款是丝缎质地的，非常提气色。你要在手背上试个色吗？', english: "Not at all. This one has a satin finish, it's very flattering. Want to swatch it on your hand?", isUser: false },
+      { role: '你 (旅客)', chinese: '哇，这个显色度绝了。那这个眼影盘呢？会飞粉吗？', english: "Wow, the pigmentation is insane. What about this palette? Is there a lot of fallout?", isUser: true },
+      { role: '柜员', chinese: '完全不会，它的质地像黄油一样顺滑，非常好推开。', english: "Hardly any. It's buttery smooth and blends like a dream.", isUser: false },
+      { role: '你 (旅客)', chinese: '挺美的，但我得去自然光下看看。我再逛逛，谢谢！', english: "It's pretty, but I need to see it in natural light. I'll look around a bit more, thanks!", isUser: true }
+    ]
+  },
+  {
+    id: 'pmo-interview',
+    category: 'interview',
+    title: 'PMO面试 · 项目管理行为题',
+    scene: '你在面试PMO（项目管理办公室）职位。面试官会问几个STAR格式的行为问题，用英文作答。',
+    keywords: ['cross-functional', 'stakeholder alignment', 'milestone', 'risk mitigation', 'deliverable', 'scope creep', 'escalate', 'driving alignment', 'project charter', 'on track'],
+    lines: [
+      { role: '面试官', chinese: '请分享一个你管理过复杂跨部门项目的经历。', english: "Tell me about a time you managed a complex cross-functional project.", isUser: false },
+      { role: '你 (候选人)', chinese: '情境是：我们在推进一个三部门协调的数据中心迁移项目，时间线很紧。我作为PMO负责协调进度和风险，每周主持三方对齐会、追踪里程碑并早期识别Scope Creep。结果是提前两周交付，成本节省了8%。', english: "The situation was — we had a data center migration involving three departments with a tight deadline. My task was to own the timeline and drive alignment across teams. What I did was run a weekly three-way sync, track milestones in a shared dashboard, and flag scope creep early. The result was delivery two weeks ahead of schedule with 8% cost savings.", isUser: true },
+      { role: '面试官', chinese: '当项目出现风险或者偏差时，你通常怎么处理？', english: "When a project runs into risk or deviation, how do you typically handle it?", isUser: false },
+      { role: '你 (候选人)', chinese: '我会先识别根本原因，评估影响范围，再决定是自行处理还是向上汇报。我不会等风险变成危机才行动——早期发现是关键。', english: "I first identify the root cause and assess the impact. Then I decide whether to mitigate within the team or escalate to leadership. I try not to wait until a risk becomes a crisis — early flagging is key.", isUser: true },
+      { role: '面试官', chinese: '你如何管理不同优先级互相冲突的干系人？', english: "How do you manage stakeholders with competing priorities?", isUser: false },
+      { role: '你 (候选人)', chinese: '我先理解每个干系人的核心诉求，找到共同点，再引导大家基于项目目标做权衡。透明沟通是维持信任的关键。', english: "I start by understanding the core objective behind each stakeholder's priority. Then I surface the trade-offs clearly and facilitate a decision based on project goals — not seniority. Transparency is key to maintaining trust.", isUser: true }
+    ]
+  },
+  {
+    id: 'hyperscaler-meeting',
+    category: 'earnings',
+    title: 'Hyperscaler会议 · AI基础设施讨论',
+    scene: '你在和一位AWS客户成功经理开会，讨论AI工作负载的架构、迁云策略和TCO分析。',
+    keywords: ['workload', 'on-premise', 'hybrid cloud', 'inference', 'capacity planning', 'TCO', 'vendor lock-in', 'elasticity', 'burst', 'steady-state'],
+    lines: [
+      { role: 'AWS客户经理', chinese: '你们目前的AI推理工作负载主要部署在哪里？本地还是云端？', english: "Where are your AI inference workloads currently running — on-premise or in the cloud?", isUser: false },
+      { role: '你', chinese: '我们目前是混合架构，核心推理跑在本地，高峰时段弹到云端。我们在评估是否要把全部工作负载迁上来。', english: "We're running a hybrid architecture — core inference on-premise, but we burst to the cloud during peak demand. We're evaluating whether to migrate the full workload.", isUser: true },
+      { role: 'AWS客户经理', chinese: '你们在容量规划上遇到什么挑战？', english: "What challenges are you seeing around capacity planning?", isUser: false },
+      { role: '你', chinese: '主要挑战是需求波动太大，预测很难。另外对单一厂商的依赖也是顾虑，我们希望保持灵活性。', english: "The main challenge is demand volatility — it's hard to forecast accurately. We're also concerned about vendor lock-in, so maintaining flexibility is a priority.", isUser: true },
+      { role: 'AWS客户经理', chinese: '从TCO角度，你们怎么评估云端方案相对于本地？', english: "From a TCO perspective, how are you evaluating cloud versus on-premise?", isUser: false },
+      { role: '你', chinese: '我们在比较五年总拥有成本，包括硬件折旧、人力成本和云端的弹性溢价。对于稳定可预期的工作负载，本地方案成本更优；但对于需求波动的场景，云端经济性很有吸引力。', english: "We're looking at five-year TCO including hardware depreciation, headcount, and the elasticity premium on cloud. For predictable, steady-state workloads, on-premise wins on cost. But for variable demand, the cloud economics are compelling.", isUser: true }
+    ]
+  },
+  {
+    id: 'ems-briefing',
+    category: 'earnings',
+    title: 'EMS供应链 · 客户季度汇报',
+    scene: '你在向数据中心客户（超大规模云厂商）汇报季度产能爬坡、供应链状况和NPI进度。',
+    keywords: ['ramp', 'yield', 'lead time', 'capacity utilization', 'shipment', 'qualification', 'NPI', 'BOM', 'component shortage', 'mitigation plan'],
+    lines: [
+      { role: '客户', chinese: 'Q3的产能爬坡情况怎么样？能满足我们的需求预测吗？', english: "How's your Q3 ramp looking? Can you meet our demand forecast?", isUser: false },
+      { role: '你', chinese: '爬坡按计划推进，良率在95%以上，产能利用率达到92%。唯一变数是内存组件的交货周期比预期长了两周，我们正在认证备选供应商。', english: "The ramp is tracking to plan. Yield is above 95% and we're at 92% capacity utilization. The only variable is memory lead times running two weeks longer than expected — we're actively qualifying a secondary supplier.", isUser: true },
+      { role: '客户', chinese: '如果内存问题解决不了，对我们的出货时间有什么影响？', english: "If the memory issue isn't resolved, what's the impact on our shipment timeline?", isUser: false },
+      { role: '你', chinese: '最坏情况是部分批次延迟两到三周。我们已经做了优先级排序，优先保证你们的关键SKU。本周末我会发一份详细的缓解方案。', english: "Worst case, we're looking at a two-to-three week slip on some lots. We've already prioritized your critical SKUs. I'll send over a detailed mitigation plan by end of week.", isUser: true },
+      { role: '客户', chinese: 'NPI的进度呢？下一代产品能按时完成认证吗？', english: "What's the NPI status? Can we hit the qualification milestone for the next-gen product on schedule?", isUser: false },
+      { role: '你', chinese: 'NPI按计划推进。预计下个月完成工程验证，PVT预计在Q4初。如果BOM有变更，请尽早通知我们——最后时刻的变更会影响认证时间线。', english: "NPI is on track. We're targeting engineering validation completion next month, with PVT in early Q4. If there are any BOM changes, we need early visibility — last-minute changes would impact the qualification timeline.", isUser: true }
+    ]
+  },
+  {
+    id: 'ai-semiconductor',
+    category: 'ai',
+    title: 'AI半导体 · 行业趋势对话',
+    scene: '你在和一位分析师讨论AI芯片供应链现状、NVIDIA vs AMD竞争格局，以及推理侧市场的展望。',
+    keywords: ['inference', 'training', 'custom silicon', 'ASIC', 'HBM', 'CoWoS', 'performance per watt', 'vendor lock-in', 'supply tightness', 'ecosystem', 'CUDA', 'moat'],
+    lines: [
+      { role: '分析师', chinese: '你怎么看现在AI芯片市场的供需情况？', english: "How do you see the current supply-demand dynamics in the AI chip market?", isUser: false },
+      { role: '你', chinese: '需求端毫无疑问还在加速，超大规模云厂商的资本开支都在上调。供给侧受限于CoWoS封装产能和HBM内存，预计供应紧张会持续到2026年底。', english: "Demand is clearly accelerating — every hyperscaler is raising capex guidance. On the supply side, the bottlenecks are CoWoS packaging capacity and HBM memory. I expect supply tightness to persist through end of 2026.", isUser: true },
+      { role: '分析师', chinese: 'NVIDIA的护城河到底有多深？AMD和自研ASIC能撼动它吗？', english: "How deep is NVIDIA's moat? Can AMD or custom silicon really challenge it?", isUser: false },
+      { role: '你', chinese: 'NVIDIA的核心护城河是CUDA生态——软件层的迁移成本极高。AMD在性能上在追赶，但生态差距还需要几年填补。自研ASIC对特定工作负载有效率优势，大厂会两条腿走路，NVIDIA会被补充，不会被替代。', english: "NVIDIA's core moat is the CUDA ecosystem — the software switching cost is enormous. AMD is closing the performance gap, but the ecosystem takes years to build. Custom ASICs win on efficiency for specific workloads, so hyperscalers will run a hybrid approach. NVIDIA won't be displaced — just supplemented.", isUser: true },
+      { role: '分析师', chinese: '你对推理侧市场有什么看法？和训练侧有什么不同？', english: "What's your view on the inference market? How does it differ from training?", isUser: false },
+      { role: '你', chinese: '训练是高度集中的，拼的是算力和内存带宽。推理则更分散——对延迟、成本、能耗的要求因场景而异，这给了AMD和自研芯片更多切入空间。随着部署规模扩大，推理端的竞争会比训练端激烈得多。', english: "Training is highly concentrated — it's all about raw compute and memory bandwidth. Inference is more fragmented: latency, cost, and power constraints vary widely by use case. That creates more room for AMD and custom silicon. As deployment scales, inference will see more competitive dynamics than training.", isUser: true }
+    ]
+  }
+];
+
 // Make available globally
-window.__DATA__ = { SEED_MATERIALS, DAILY_PLAN, CORRECTION_PATTERNS };
+window.__DATA__ = { SEED_MATERIALS, DAILY_PLAN, CORRECTION_PATTERNS, SPEAKING_SCENARIOS };
