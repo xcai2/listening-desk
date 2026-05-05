@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Listening Desk · 听说提升计划</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #0e0d0a;
+  --bg-2: #15140f;
+  --bg-3: #1c1a14;
+  --line: #2a2720;
+  --line-2: #3a362c;
+  --ink: #f3ecde;
+  --ink-2: #c8bea7;
+  --ink-3: #8a8170;
+  --accent: #e8b13a;       /* mustard / amber */
+  --accent-2: #c97a3f;     /* burnt orange */
+  --accent-3: #6b8e7f;     /* sage */
+  --red: #c4514a;
+  --green: #8aa872;
+  --serif: 'Fraunces', 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--sans); overflow-x: hidden; }
+body {
+  background-image:
+    radial-gradient(ellipse at top left, rgba(232, 177, 58, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(107, 142, 127, 0.04) 0%, transparent 60%);
+  min-height: 100vh;
+}
+
+/* ========== Top masthead ========== */
+.masthead {
+  border-bottom: 1px solid var(--line);
+  padding: 28px 40px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 24px;
+}
+.masthead .left, .masthead .right {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.masthead .right { text-align: right; }
+.masthead h1 {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(38px, 5vw, 64px);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  font-style: italic;
+  text-align: center;
+}
+.masthead h1 .sub {
+  display: block;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.32em;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 8px;
+  font-family: var(--sans);
+}
+.masthead .ticker {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.ticker-item { color: var(--ink-2); }
+.ticker-item .v { color: var(--accent); }
+
+/* ========== Nav ========== */
+nav.tabs {
+  border-bottom: 1px solid var(--line);
+  padding: 0 40px;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  background: var(--bg-2);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+nav.tabs button {
+  background: transparent;
+  border: none;
+  color: var(--ink-3);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 18px 22px;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+nav.tabs button:hover { color: var(--ink-2); }
+nav.tabs button.active { color: var(--ink); }
+nav.tabs button.active::after {
+  content: "";
+  position: absolute;
+  left: 22px; right: 22px; bottom: 0;
+  height: 2px;
+  background: var(--accent);
+}
+nav.tabs button .num {
+  font-family: var(--mono);
+  color: var(--accent);
+  font-size: 10px;
+  margin-right: 8px;
+  font-weight: 600;
+}
+
+/* ========== Main ========== */
+main {
+  padding: 48px 40px 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.section { display: none; animation: fadeIn 0.4s ease; }
+.section.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 36px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.section-head .num {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+.section-head h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 42px;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+.section-head h2 .it { font-style: italic; font-weight: 400; color: var(--ink-2); }
+.section-head p {
+  grid-column: 2;
+  margin-top: 8px;
+  color: var(--ink-3);
+  font-size: 14px;
+  max-width: 700px;
+  line-height: 1.5;
+}
+
+/* ========== HOME / Daily plan ========== */
+.hero-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 40px;
+  margin-bottom: 32px;
+  position: relative;
+}
+.hero-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 60px; height: 1px;
+  background: var(--accent);
+}
+.hero-card .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.hero-card .quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(22px, 2.5vw, 30px);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  max-width: 850px;
+}
+.hero-card .quote .em { color: var(--accent); font-style: normal; font-weight: 600; }
+.hero-card .by {
+  margin-top: 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+.daily-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.daily-block {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 24px;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.daily-block:hover { border-color: var(--line-2); }
+.daily-block.done { border-color: var(--accent-3); background: rgba(107, 142, 127, 0.05); }
+.daily-block .top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.daily-block .min {
+  font-family: var(--mono);
+  font-size: 28px;
+  color: var(--accent);
+  font-weight: 600;
+  line-height: 1;
+}
+.daily-block .min span { font-size: 12px; color: var(--ink-3); margin-left: 4px; }
+.daily-block h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.daily-block .when {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: var(--mono);
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+}
+.daily-block ol {
+  list-style: none;
+  counter-reset: step;
+  margin-bottom: 16px;
+}
+.daily-block ol li {
+  counter-increment: step;
+  padding: 6px 0 6px 28px;
+  position: relative;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+.daily-block ol li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  top: 8px;
+}
+.daily-block .output {
+  font-size: 12px;
+  color: var(--ink-3);
+  border-top: 1px dashed var(--line);
+  padding-top: 12px;
+  font-style: italic;
+}
+.check-toggle {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 24px; height: 24px;
+  border: 1px solid var(--line-2);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  color: var(--accent-3);
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.check-toggle:hover { border-color: var(--accent-3); }
+.daily-block.done .check-toggle { background: var(--accent-3); color: var(--bg); border-color: var(--accent-3); }
+
+.streak-bar {
+  display: flex;
+  gap: 4px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.streak-day {
+  width: 22px; height: 22px;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink-3);
+}
+.streak-day.done { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
+/* Library at-a-glance strip on home */
+.lib-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin: 24px 0 32px;
+}
+.lib-stats .cell {
+  background: var(--bg-2);
+  padding: 18px 16px;
+  text-align: center;
+}
+.lib-stats .cell:hover { background: var(--bg-3); cursor: pointer; }
+.lib-stats .cell .num {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.lib-stats .cell .label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+
+/* ========== LIBRARY ========== */
+.lib-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.lib-filters button {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  padding: 8px 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.lib-filters button:hover { border-color: var(--ink-3); }
+.lib-filters button.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.lib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+.lib-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.lib-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.lib-card .meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.lib-card .meta .cat {
+  color: var(--accent);
+  font-weight: 600;
+}
+.lib-card h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.lib-card .company {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: var(--mono);
+  margin-bottom: 12px;
+}
+.lib-card .why {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  flex: 1;
+}
+.lib-card .footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+.lib-card .difficulty { color: var(--accent-2); }
+.lib-card .chunks-count { color: var(--ink-3); }
+.lib-card .chunks-count span { color: var(--accent); }
+
+/* Modal for material detail */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 100;
+  overflow-y: auto;
+  padding: 40px 20px;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+  max-width: 900px;
+  width: 100%;
+  padding: 40px;
+  position: relative;
+}
+.modal .close {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  width: 36px; height: 36px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal .close:hover { border-color: var(--accent); color: var(--accent); }
+.modal h2 {
+  font-family: var(--serif);
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  padding-right: 50px;
+}
+.modal .modal-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.modal .why-block {
+  background: var(--bg-3);
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+.modal h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  margin-top: 24px;
+}
+.modal .sources {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.modal .sources a {
+  color: var(--ink);
+  text-decoration: none;
+  padding: 12px 16px;
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  transition: all 0.2s;
+}
+.modal .sources a:hover { border-color: var(--accent); color: var(--accent); }
+.modal .sources a::after { content: "↗"; color: var(--ink-3); }
+
+.chunk-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+.chunk-table tr { border-bottom: 1px solid var(--line); }
+.chunk-table td {
+  padding: 14px 12px;
+  vertical-align: top;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.chunk-table .phr {
+  font-weight: 600;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 12px;
+  width: 30%;
+}
+.chunk-table .mean { color: var(--ink-2); width: 25%; }
+.chunk-table .ex {
+  color: var(--ink-3);
+  font-style: italic;
+  font-family: var(--serif);
+}
+.chunk-table .add-btn {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--ink-3);
+  padding: 4px 8px;
+  font-size: 10px;
+  font-family: var(--mono);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.chunk-table .add-btn:hover { border-color: var(--accent); color: var(--accent); }
+.chunk-table .add-btn.added { background: var(--accent-3); color: var(--bg); border-color: var(--accent-3); }
+
+/* ========== SHADOWING ========== */
+.shadow-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.shadow-controls select, .shadow-controls button {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+.shadow-controls button.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+.shadow-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 40px;
+  text-align: center;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.shadow-card .scenario-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.shadow-card .phrase {
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  max-width: 800px;
+}
+.shadow-card .meaning {
+  font-size: 16px;
+  color: var(--ink-2);
+  margin-bottom: 20px;
+}
+.shadow-card .example {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink-3);
+  border-top: 1px dashed var(--line);
+  border-bottom: 1px dashed var(--line);
+  padding: 16px 0;
+  margin: 16px 0;
+  max-width: 700px;
+  line-height: 1.5;
+}
+.shadow-card .source {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+.shadow-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+.shadow-actions button {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  padding: 12px 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.shadow-actions button:hover { border-color: var(--accent); color: var(--accent); }
+.shadow-actions button.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+.shadow-progress {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  text-align: center;
+  margin-top: 16px;
+  letter-spacing: 0.1em;
+}
+
+/* ========== CHUNKS NOTEBOOK ========== */
+.notebook-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.notebook-controls input[type=text] {
+  flex: 1;
+  min-width: 240px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 12px 16px;
+  font-family: var(--sans);
+  font-size: 14px;
+}
+.notebook-controls input[type=text]:focus { outline: none; border-color: var(--accent); }
+.notebook-controls button.primary {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: var(--bg);
+  padding: 12px 18px;
+  font-weight: 600;
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+}
+
+.notebook-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+.chunk-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 20px;
+  position: relative;
+}
+.chunk-card .scenario {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.chunk-card .phr {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.chunk-card .mean {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin-bottom: 10px;
+}
+.chunk-card .ex {
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-3);
+  font-family: var(--serif);
+  border-top: 1px dashed var(--line);
+  padding-top: 10px;
+  line-height: 1.5;
+}
+.chunk-card .delete {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: none;
+  border: none;
+  color: var(--ink-3);
+  cursor: pointer;
+  font-size: 16px;
+  width: 24px; height: 24px;
+}
+.chunk-card .delete:hover { color: var(--red); }
+
+/* ========== ADD MATERIAL ========== */
+.form-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 32px;
+  max-width: 720px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+.form-row label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 12px;
+}
+.form-row input, .form-row textarea, .form-row select {
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 12px 14px;
+  font-family: var(--sans);
+  font-size: 14px;
+  width: 100%;
+}
+.form-row input:focus, .form-row textarea:focus, .form-row select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.form-row textarea { min-height: 80px; resize: vertical; font-family: var(--sans); }
+.form-row .help {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-top: 6px;
+  font-style: italic;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 14px 28px;
+  font-family: var(--mono);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 12px;
+  cursor: pointer;
+}
+.btn-primary:hover { background: var(--accent-2); }
+.btn-secondary {
+  background: transparent;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  padding: 14px 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ========== REFLECTION ========== */
+.refl-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+@media (max-width: 900px) { .refl-grid { grid-template-columns: 1fr; } }
+
+.refl-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 28px;
+}
+.refl-card h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.refl-card .lead {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+  font-family: var(--mono);
+  letter-spacing: 0.05em;
+}
+.refl-card textarea {
+  width: 100%;
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 14px;
+  font-family: var(--serif);
+  font-size: 14px;
+  min-height: 100px;
+  resize: vertical;
+  line-height: 1.6;
+}
+.refl-card textarea:focus { outline: none; border-color: var(--accent); }
+
+.refl-history {
+  margin-top: 24px;
+}
+.refl-entry {
+  background: var(--bg-3);
+  border-left: 3px solid var(--accent);
+  padding: 14px 18px;
+  margin-bottom: 12px;
+}
+.refl-entry .when {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.refl-entry .body {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+  font-family: var(--serif);
+}
+.refl-entry .delete-mini {
+  float: right;
+  background: none;
+  border: none;
+  color: var(--ink-3);
+  cursor: pointer;
+  font-size: 14px;
+}
+.refl-entry .delete-mini:hover { color: var(--red); }
+
+.correction-list {
+  margin-top: 0;
+}
+.correction-item {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.correction-item .wrong {
+  color: var(--red);
+  font-family: var(--serif);
+  font-style: italic;
+  text-decoration: line-through;
+  text-decoration-color: rgba(196, 81, 74, 0.3);
+}
+.correction-item .arrow {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-weight: 600;
+}
+.correction-item .right {
+  color: var(--green);
+  font-family: var(--serif);
+  font-weight: 500;
+}
+.correction-item .note {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  color: var(--ink-3);
+  font-style: italic;
+  margin-top: 4px;
+  font-family: var(--sans);
+}
+
+/* ========== Empty / utility ========== */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ink-3);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: var(--bg);
+  padding: 12px 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; }
+
+/* Mobile */
+@media (max-width: 720px) {
+  .masthead { grid-template-columns: 1fr; padding: 20px; }
+  .masthead .left, .masthead .right { text-align: center; }
+  .masthead .ticker { justify-content: center; }
+  nav.tabs { padding: 0 12px; }
+  nav.tabs button { padding: 14px 12px; font-size: 12px; }
+  main { padding: 24px 16px 60px; }
+  .section-head h2 { font-size: 28px; }
+  .form-row { grid-template-columns: 1fr; }
+  .form-row label { padding-top: 0; }
+  .modal { padding: 24px; }
+  .lib-grid, .notebook-grid { grid-template-columns: 1fr; }
+  .correction-item { grid-template-columns: 1fr; gap: 4px; }
+  .correction-item .arrow { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="left">
+    <span id="today-date">—</span><br>
+    Vol. I · No. <span id="day-counter">1</span>
+  </div>
+  <h1>The Listening Desk<span class="sub">A Bilingual Briefing for the Studious Ear</span></h1>
+  <div class="right">
+    <div class="ticker">
+      <span class="ticker-item">CHUNKS <span class="v" id="stat-chunks">0</span></span>
+      <span class="ticker-item">STREAK <span class="v" id="stat-streak">0d</span></span>
+      <span class="ticker-item">ENTRIES <span class="v" id="stat-entries">0</span></span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button data-tab="home" class="active"><span class="num">01</span>Today</button>
+  <button data-tab="library"><span class="num">02</span>Library</button>
+  <button data-tab="shadow"><span class="num">03</span>Shadowing</button>
+  <button data-tab="notebook"><span class="num">04</span>Chunks</button>
+  <button data-tab="add"><span class="num">05</span>Add Material</button>
+  <button data-tab="reflect"><span class="num">06</span>Reflection</button>
+</nav>
+
+<main>
+
+  <!-- ============ HOME ============ -->
+  <section class="section active" id="sec-home">
+    <div class="hero-card">
+      <div class="label">Editor's Note · 编者按</div>
+      <p class="quote">
+        Eight months of frustration is not stalled progress —<br>
+        it's the gap between <span class="em">passive exposure</span> and
+        <span class="em">deliberate practice</span>.<br>
+        Forty-five minutes a day, done correctly, beats two hours of drift.
+      </p>
+      <div class="by">— The Method, Page One</div>
+    </div>
+
+    <div class="lib-stats" id="lib-stats"></div>
+
+    <div class="section-head" style="margin-top: 40px;">
+      <span class="num">01.A</span>
+      <div>
+        <h2>The 45-Minute <span class="it">Daily Routine</span></h2>
+      </div>
+      <p>四个时间块,合计 45 分钟。每天完成一块就打勾 — 完成后会记入连续打卡天数。</p>
+    </div>
+
+    <div class="daily-grid" id="daily-grid"></div>
+
+    <div style="margin-top: 32px;">
+      <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; color: var(--ink-3); text-transform: uppercase; margin-bottom: 12px;">Last 30 days · 打卡记录</div>
+      <div class="streak-bar" id="streak-bar"></div>
+    </div>
+  </section>
+
+  <!-- ============ LIBRARY ============ -->
+  <section class="section" id="sec-library">
+    <div class="section-head">
+      <span class="num">02</span>
+      <div><h2>The <span class="it">Library</span></h2></div>
+      <p>预先整理的真实素材 — earnings calls、Bloomberg、FP&A 面试、商务会议、日常英语。每个素材都有来源链接和精挑的 chunks。</p>
+    </div>
+
+    <div class="lib-filters" id="lib-filters"></div>
+    <div class="lib-grid" id="lib-grid"></div>
+  </section>
+
+  <!-- ============ SHADOWING ============ -->
+  <section class="section" id="sec-shadow">
+    <div class="section-head">
+      <span class="num">03</span>
+      <div><h2>The <span class="it">Shadowing Drill</span></h2></div>
+      <p>挑场景 → 出现一句 → 大声跟读 5 遍 → 点 Next。把这套循环每天 15 分钟坚持下来,口音和流畅度会显著变化。</p>
+    </div>
+
+    <div class="shadow-controls">
+      <select id="shadow-scenario">
+        <option value="all">All Scenarios — 全部</option>
+        <option value="earnings">Earnings Calls 财报会</option>
+        <option value="ai">AI / Tech 科技与AI</option>
+        <option value="markets">Bloomberg / Markets 市场点评</option>
+        <option value="interview">Interviews 面试</option>
+        <option value="meeting">Meetings 商务会议</option>
+        <option value="small-talk">Small Talk 闲聊</option>
+        <option value="service">Service / Errands 服务场景</option>
+        <option value="social">Social / Friends 社交</option>
+      </select>
+      <button id="shadow-shuffle">🔀 Shuffle</button>
+    </div>
+
+    <div class="shadow-card" id="shadow-card"></div>
+    <div class="shadow-actions">
+      <button id="shadow-prev">← Prev</button>
+      <button id="shadow-add" class="primary">+ Add to Notebook</button>
+      <button id="shadow-next">Next →</button>
+    </div>
+    <div class="shadow-progress" id="shadow-progress"></div>
+  </section>
+
+  <!-- ============ NOTEBOOK ============ -->
+  <section class="section" id="sec-notebook">
+    <div class="section-head">
+      <span class="num">04</span>
+      <div><h2>Chunks <span class="it">Notebook</span></h2></div>
+      <p>你专属的语块库。从 Library / Shadowing 加进来,或者点 + 自己加。能搜索,能按场景过滤。</p>
+    </div>
+
+    <div class="notebook-controls">
+      <input type="text" id="notebook-search" placeholder="Search… 搜索短语 / 场景 / 含义" />
+      <select id="notebook-filter">
+        <option value="all">All Scenarios</option>
+        <option value="earnings">Earnings</option>
+        <option value="ai">AI / Tech</option>
+        <option value="markets">Markets</option>
+        <option value="interview">Interview</option>
+        <option value="meeting">Meeting</option>
+        <option value="small-talk">Small Talk</option>
+        <option value="service">Service</option>
+        <option value="social">Social</option>
+        <option value="custom">My Own (Custom)</option>
+      </select>
+      <button class="primary" id="notebook-add-btn">+ Add Chunk</button>
+      <button class="primary" id="notebook-export-btn" style="background: transparent; color: var(--ink-2); border: 1px solid var(--line);">⬇ Export JSON</button>
+    </div>
+
+    <div class="notebook-grid" id="notebook-grid"></div>
+  </section>
+
+  <!-- ============ ADD MATERIAL ============ -->
+  <section class="section" id="sec-add">
+    <div class="section-head">
+      <span class="num">05</span>
+      <div><h2>Add a <span class="it">New Source</span></h2></div>
+      <p>添加一个新的 YouTube 频道、podcast、或公司的 earnings call。填完后会进入 Library,可以从里面手动添加 chunks。</p>
+    </div>
+
+    <div class="form-card">
+      <div class="form-row">
+        <label>Title</label>
+        <div>
+          <input type="text" id="new-title" placeholder="e.g. Apple Q2 FY26 Earnings Call" />
+          <div class="help">名字写得具体一点,方便以后找</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Category</label>
+        <select id="new-category">
+          <option value="hyperscaler">Hyperscaler 云厂商财报</option>
+          <option value="ai">AI / Tech AI与科技</option>
+          <option value="earnings">EMS Earnings 制造业财报</option>
+          <option value="bloomberg">Bloomberg / Markets 市场点评</option>
+          <option value="interview">Interview Prep 面试准备</option>
+          <option value="business">Business Comm 商务沟通</option>
+          <option value="daily">Daily English 日常英语</option>
+          <option value="custom">Other 其他</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Company / Source</label>
+        <input type="text" id="new-company" placeholder="e.g. Apple, NVIDIA, BBC, my favorite YouTuber" />
+      </div>
+      <div class="form-row">
+        <label>Why this material</label>
+        <div>
+          <textarea id="new-why" placeholder="为什么这个对我有用?(写给未来的自己看)"></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Difficulty</label>
+        <select id="new-difficulty">
+          <option>Easy</option>
+          <option>Easy-Medium</option>
+          <option selected>Medium</option>
+          <option>Medium-Hard</option>
+          <option>Hard</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Duration</label>
+        <input type="text" id="new-duration" placeholder="e.g. ~30 min, 5 min/day" />
+      </div>
+      <div class="form-row">
+        <label>Source URL</label>
+        <div>
+          <input type="text" id="new-url" placeholder="https://..." />
+          <div class="help">YouTube / Podcast / 文章链接 — 想加多个的话,先建一个,之后还能在 Library 里编辑</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Source label</label>
+        <input type="text" id="new-url-label" placeholder="e.g. YouTube full episode" />
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 12px;">
+        <button class="btn-primary" id="new-save">Save to Library</button>
+        <button class="btn-secondary" id="new-clear">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REFLECTION ============ -->
+  <section class="section" id="sec-reflect">
+    <div class="section-head">
+      <span class="num">06</span>
+      <div><h2>The <span class="it">Reflection</span> Desk</h2></div>
+      <p>每天写一点 — 卡住的句子、听到的有意思的表达、自言自语时发现的错误。复盘是把"知道"转化为"会用"的关键步骤。</p>
+    </div>
+
+    <div class="refl-grid">
+      <div class="refl-card">
+        <h3>Today's Reflection</h3>
+        <div class="lead">用英文写最好,中英混杂也没问题。30-100 字。</div>
+        <textarea id="refl-input" placeholder="Today I struggled to say… / I learned that native speakers say X instead of Y…"></textarea>
+        <div style="margin-top: 12px;">
+          <button class="btn-primary" id="refl-save">Save Entry</button>
+        </div>
+      </div>
+
+      <div class="refl-card">
+        <h3>Common Mistakes → <span style="color: var(--accent);">Native Version</span></h3>
+        <div class="lead">中式英语高频错误及自然表达。每周看一遍,内化。</div>
+        <div class="correction-list" id="correction-list"></div>
+      </div>
+    </div>
+
+    <h4 style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px;">Past Entries · 历史复盘</h4>
+    <div class="refl-history" id="refl-history"></div>
+  </section>
+
+</main>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<div class="toast" id="toast">SAVED</div>
+
+<script src="data.js"></script>
+<script>
+// ============================================================
+//  STATE  (localStorage)
+// ============================================================
+const LS = {
+  get(k, fallback) {
+    try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; }
+    catch (e) { return fallback; }
+  },
+  set(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+};
+
+const STATE = {
+  customMaterials: LS.get('listeningdesk:materials', []),
+  customChunks: LS.get('listeningdesk:chunks', []),
+  todayDone: LS.get('listeningdesk:today', { date: null, blocks: [] }),
+  history: LS.get('listeningdesk:history', {}),       // { 'YYYY-MM-DD': [block indices done] }
+  reflections: LS.get('listeningdesk:reflections', []),
+  shadowIdx: 0,
+};
+
+function saveAll() {
+  LS.set('listeningdesk:materials', STATE.customMaterials);
+  LS.set('listeningdesk:chunks', STATE.customChunks);
+  LS.set('listeningdesk:today', STATE.todayDone);
+  LS.set('listeningdesk:history', STATE.history);
+  LS.set('listeningdesk:reflections', STATE.reflections);
+}
+
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// reset todayDone if new day
+(function () {
+  const tk = todayKey();
+  if (STATE.todayDone.date !== tk) {
+    // archive yesterday into history if any progress
+    if (STATE.todayDone.date && STATE.todayDone.blocks.length) {
+      STATE.history[STATE.todayDone.date] = STATE.todayDone.blocks;
+    }
+    STATE.todayDone = { date: tk, blocks: [] };
+    saveAll();
+  }
+})();
+
+const ALL_MATERIALS = () => [...window.__DATA__.SEED_MATERIALS, ...STATE.customMaterials];
+const ALL_CHUNKS = () => {
+  const fromMaterials = [];
+  ALL_MATERIALS().forEach(m => {
+    (m.chunks || []).forEach(c => fromMaterials.push({ ...c, _source: m.title, _materialId: m.id }));
+  });
+  return [...fromMaterials, ...STATE.customChunks];
+};
+
+// ============================================================
+//  HELPERS
+// ============================================================
+function el(tag, attrs = {}, ...children) {
+  const e = document.createElement(tag);
+  for (const k in attrs) {
+    if (k === 'class') e.className = attrs[k];
+    else if (k === 'html') e.innerHTML = attrs[k];
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2).toLowerCase(), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  children.flat().forEach(c => {
+    if (c == null || c === false) return;
+    e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  });
+  return e;
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function categoryLabel(cat) {
+  return ({
+    earnings: 'EMS Earnings',
+    hyperscaler: 'Hyperscaler',
+    ai: 'AI / Tech',
+    bloomberg: 'Markets / Bloomberg',
+    interview: 'Interview Prep',
+    business: 'Business Comm',
+    daily: 'Daily English',
+    custom: 'Custom'
+  })[cat] || cat;
+}
+
+function scenarioLabel(s) {
+  return ({
+    earnings: 'Earnings',
+    ai: 'AI / Tech',
+    markets: 'Markets',
+    interview: 'Interview',
+    meeting: 'Meeting',
+    'small-talk': 'Small Talk',
+    service: 'Service',
+    social: 'Social',
+    custom: 'Custom'
+  })[s] || s;
+}
+
+// ============================================================
+//  MASTHEAD STATS
+// ============================================================
+function updateMasthead() {
+  const d = new Date();
+  document.getElementById('today-date').textContent =
+    d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase();
+
+  document.getElementById('stat-chunks').textContent = ALL_CHUNKS().length;
+  document.getElementById('stat-entries').textContent = STATE.reflections.length;
+
+  // streak: count consecutive days back from today/yesterday with full plan completed (>=1 block)
+  let streak = 0;
+  const todayDone = STATE.todayDone.blocks.length > 0;
+  let cursor = new Date();
+  if (!todayDone) cursor.setDate(cursor.getDate() - 1);
+  while (true) {
+    const k = `${cursor.getFullYear()}-${String(cursor.getMonth()+1).padStart(2,'0')}-${String(cursor.getDate()).padStart(2,'0')}`;
+    const blocks = (k === STATE.todayDone.date) ? STATE.todayDone.blocks : STATE.history[k];
+    if (blocks && blocks.length > 0) { streak++; cursor.setDate(cursor.getDate() - 1); }
+    else break;
+  }
+  document.getElementById('stat-streak').textContent = streak + 'd';
+
+  // day counter — days since first ever entry
+  const all = Object.keys(STATE.history).concat(STATE.todayDone.date ? [STATE.todayDone.date] : []);
+  document.getElementById('day-counter').textContent = all.length || 1;
+}
+
+// ============================================================
+//  TABS
+// ============================================================
+document.querySelectorAll('nav.tabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// ============================================================
+//  HOME  /  Daily plan
+// ============================================================
+function renderDaily() {
+  const grid = document.getElementById('daily-grid');
+  grid.innerHTML = '';
+  window.__DATA__.DAILY_PLAN.forEach((b, i) => {
+    const done = STATE.todayDone.blocks.includes(i);
+    const card = el('div', { class: 'daily-block' + (done ? ' done' : '') });
+    card.innerHTML = `
+      <button class="check-toggle">${done ? '✓' : ''}</button>
+      <div class="top">
+        <div>
+          <div class="min">${b.minutes}<span>min</span></div>
+        </div>
+      </div>
+      <h3>${b.block}</h3>
+      <div class="when">${b.when}</div>
+      <ol>${b.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+      <div class="output">输出 → ${b.output}</div>
+    `;
+    card.querySelector('.check-toggle').onclick = () => {
+      const idx = STATE.todayDone.blocks.indexOf(i);
+      if (idx >= 0) STATE.todayDone.blocks.splice(idx, 1);
+      else STATE.todayDone.blocks.push(i);
+      saveAll();
+      renderDaily();
+      renderStreak();
+      updateMasthead();
+    };
+    grid.appendChild(card);
+  });
+}
+
+function renderLibStats() {
+  const wrap = document.getElementById('lib-stats');
+  if (!wrap) return;
+  const all = ALL_MATERIALS();
+  const byCat = {};
+  let totalChunks = 0;
+  let totalSources = 0;
+  all.forEach(m => {
+    byCat[m.category] = (byCat[m.category] || 0) + 1;
+    totalChunks += (m.chunks || []).length;
+    totalSources += (m.sources || []).length;
+  });
+  const cells = [
+    { num: all.length, label: 'Materials' },
+    { num: totalChunks, label: 'Curated Chunks' },
+    { num: totalSources, label: 'Source Links' },
+    { num: byCat.hyperscaler || 0, label: 'Hyperscalers', cat: 'hyperscaler' },
+    { num: byCat.ai || 0, label: 'AI / Tech', cat: 'ai' },
+    { num: byCat.earnings || 0, label: 'EMS', cat: 'earnings' },
+    { num: byCat.interview || 0, label: 'Interview', cat: 'interview' },
+    { num: byCat.daily || 0, label: 'Daily', cat: 'daily' }
+  ];
+  wrap.innerHTML = cells.map(c => `
+    <div class="cell" data-cat="${c.cat || ''}">
+      <div class="num">${c.num}</div>
+      <div class="label">${c.label}</div>
+    </div>
+  `).join('');
+  wrap.querySelectorAll('.cell[data-cat]').forEach(cell => {
+    if (!cell.dataset.cat) return;
+    cell.onclick = () => {
+      libFilter = cell.dataset.cat;
+      document.querySelector('nav.tabs button[data-tab=library]').click();
+      renderLibrary();
+    };
+  });
+}
+
+function renderStreak() {
+  const bar = document.getElementById('streak-bar');
+  bar.innerHTML = '';
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const blocks = (k === STATE.todayDone.date) ? STATE.todayDone.blocks : (STATE.history[k] || []);
+    const done = blocks.length > 0;
+    const sd = el('div', {
+      class: 'streak-day' + (done ? ' done' : ''),
+      title: `${k} — ${blocks.length}/4 blocks`
+    }, String(d.getDate()));
+    bar.appendChild(sd);
+  }
+}
+
+// ============================================================
+//  LIBRARY
+// ============================================================
+let libFilter = 'all';
+function renderLibrary() {
+  const filters = document.getElementById('lib-filters');
+  filters.innerHTML = '';
+  const cats = ['all', 'hyperscaler', 'ai', 'earnings', 'bloomberg', 'interview', 'business', 'daily', 'custom'];
+  cats.forEach(c => {
+    const has = c === 'all' || ALL_MATERIALS().some(m => m.category === c);
+    if (!has) return;
+    const b = el('button', {
+      class: libFilter === c ? 'active' : '',
+      onclick: () => { libFilter = c; renderLibrary(); }
+    }, c === 'all' ? 'All' : categoryLabel(c));
+    filters.appendChild(b);
+  });
+
+  const grid = document.getElementById('lib-grid');
+  grid.innerHTML = '';
+  const items = ALL_MATERIALS().filter(m => libFilter === 'all' || m.category === libFilter);
+  if (items.length === 0) { grid.appendChild(el('div', { class: 'empty' }, 'No materials in this category yet.')); return; }
+  items.forEach(m => {
+    const card = el('div', { class: 'lib-card', onclick: () => openModal(m) });
+    card.innerHTML = `
+      <div class="meta">
+        <span class="cat">${categoryLabel(m.category)}</span>
+        <span>${m.duration || ''}</span>
+      </div>
+      <h3>${m.title}</h3>
+      <div class="company">${m.company || ''}</div>
+      <div class="why">${m.why || ''}</div>
+      <div class="footer">
+        <span class="difficulty">${m.difficulty || ''}</span>
+        <span class="chunks-count"><span>${(m.chunks || []).length}</span> chunks</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function openModal(m) {
+  const modal = document.getElementById('modal-content');
+  modal.innerHTML = `
+    <button class="close">×</button>
+    <h2>${m.title}</h2>
+    <div class="modal-meta">${categoryLabel(m.category)} · ${m.company || ''} · ${m.duration || ''} · ${m.difficulty || ''}</div>
+    <div class="why-block"><strong style="color: var(--accent);">为什么练这个 →</strong> ${m.why || ''}</div>
+
+    <h4>Sources · 来源</h4>
+    <div class="sources">
+      ${(m.sources || []).map(s => `<a href="${s.url}" target="_blank" rel="noopener">${s.label}</a>`).join('')}
+    </div>
+
+    ${m.chunks && m.chunks.length ? `
+    <h4>Curated Chunks · 精选语块</h4>
+    <table class="chunk-table">
+      ${m.chunks.map((c, i) => `
+        <tr>
+          <td class="phr">${c.phrase}</td>
+          <td class="mean">${c.meaning}</td>
+          <td class="ex">${c.example || ''}</td>
+          <td><button class="add-btn" data-mat="${m.id}" data-idx="${i}">+ Save</button></td>
+        </tr>
+      `).join('')}
+    </table>` : ''}
+
+    ${m.category === 'custom' ? `
+    <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line);">
+      <button class="btn-secondary" id="del-custom">🗑 Delete this material</button>
+    </div>` : ''}
+  `;
+
+  modal.querySelector('.close').onclick = closeModal;
+
+  modal.querySelectorAll('.add-btn').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const matId = btn.dataset.mat;
+      const idx = +btn.dataset.idx;
+      const mat = ALL_MATERIALS().find(x => x.id === matId);
+      const c = mat.chunks[idx];
+      if (STATE.customChunks.find(x => x.phrase === c.phrase && x.meaning === c.meaning)) {
+        toast('Already in notebook');
+        return;
+      }
+      STATE.customChunks.push({ ...c, _added: Date.now(), _source: mat.title });
+      saveAll();
+      btn.classList.add('added');
+      btn.textContent = '✓ Added';
+      updateMasthead();
+      toast('Added to Notebook');
+    };
+  });
+
+  if (m.category === 'custom') {
+    modal.querySelector('#del-custom').onclick = () => {
+      if (!confirm('Delete this material?')) return;
+      STATE.customMaterials = STATE.customMaterials.filter(x => x.id !== m.id);
+      saveAll();
+      closeModal();
+      renderLibrary();
+      toast('Deleted');
+    };
+  }
+
+  document.getElementById('modal-overlay').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('active');
+}
+document.getElementById('modal-overlay').addEventListener('click', (e) => {
+  if (e.target.id === 'modal-overlay') closeModal();
+});
+
+// ============================================================
+//  SHADOWING
+// ============================================================
+function shadowPool() {
+  const scn = document.getElementById('shadow-scenario').value;
+  const all = ALL_CHUNKS();
+  return scn === 'all' ? all : all.filter(c => c.scenario === scn);
+}
+
+function renderShadow() {
+  const pool = shadowPool();
+  const card = document.getElementById('shadow-card');
+  const prog = document.getElementById('shadow-progress');
+  if (pool.length === 0) {
+    card.innerHTML = '<div class="empty">No phrases in this scenario yet.</div>';
+    prog.textContent = '';
+    return;
+  }
+  if (STATE.shadowIdx >= pool.length) STATE.shadowIdx = 0;
+  if (STATE.shadowIdx < 0) STATE.shadowIdx = pool.length - 1;
+  const c = pool[STATE.shadowIdx];
+  card.innerHTML = `
+    <div class="scenario-tag">${scenarioLabel(c.scenario || 'custom')}</div>
+    <div class="phrase">"${c.phrase}"</div>
+    <div class="meaning">${c.meaning || ''}</div>
+    ${c.example ? `<div class="example">${c.example}</div>` : ''}
+    ${c._source ? `<div class="source">— ${c._source}</div>` : ''}
+  `;
+  prog.textContent = `${STATE.shadowIdx + 1} / ${pool.length}`;
+}
+
+document.getElementById('shadow-prev').onclick = () => { STATE.shadowIdx--; renderShadow(); };
+document.getElementById('shadow-next').onclick = () => { STATE.shadowIdx++; renderShadow(); };
+document.getElementById('shadow-shuffle').onclick = () => {
+  const pool = shadowPool();
+  STATE.shadowIdx = Math.floor(Math.random() * pool.length);
+  renderShadow();
+};
+document.getElementById('shadow-scenario').onchange = () => { STATE.shadowIdx = 0; renderShadow(); };
+document.getElementById('shadow-add').onclick = () => {
+  const pool = shadowPool();
+  if (!pool.length) return;
+  const c = pool[STATE.shadowIdx];
+  if (STATE.customChunks.find(x => x.phrase === c.phrase)) { toast('Already in notebook'); return; }
+  STATE.customChunks.push({ ...c, _added: Date.now() });
+  saveAll();
+  updateMasthead();
+  toast('Added to Notebook');
+};
+
+// ============================================================
+//  NOTEBOOK
+// ============================================================
+function renderNotebook() {
+  const q = document.getElementById('notebook-search').value.toLowerCase();
+  const f = document.getElementById('notebook-filter').value;
+  const grid = document.getElementById('notebook-grid');
+  grid.innerHTML = '';
+
+  let items = ALL_CHUNKS();
+  if (f === 'custom') items = items.filter(c => !c._materialId);
+  else if (f !== 'all') items = items.filter(c => c.scenario === f);
+  if (q) items = items.filter(c =>
+    (c.phrase + c.meaning + (c.example || '') + (c._source || '')).toLowerCase().includes(q)
+  );
+
+  if (items.length === 0) {
+    grid.appendChild(el('div', { class: 'empty' }, 'No chunks. Add some from Library or with the + button.'));
+    return;
+  }
+
+  items.forEach((c, i) => {
+    const card = el('div', { class: 'chunk-card' });
+    const isCustom = !c._materialId;
+    card.innerHTML = `
+      <div class="scenario">${scenarioLabel(c.scenario || 'custom')}${c._source ? ' · ' + c._source : ''}</div>
+      <div class="phr">${c.phrase}</div>
+      <div class="mean">${c.meaning}</div>
+      ${c.example ? `<div class="ex">${c.example}</div>` : ''}
+      ${isCustom ? '<button class="delete" title="Delete">×</button>' : ''}
+    `;
+    if (isCustom) {
+      card.querySelector('.delete').onclick = () => {
+        STATE.customChunks = STATE.customChunks.filter(x => !(x.phrase === c.phrase && x.meaning === c.meaning));
+        saveAll();
+        renderNotebook();
+        updateMasthead();
+        toast('Deleted');
+      };
+    }
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById('notebook-search').oninput = renderNotebook;
+document.getElementById('notebook-filter').onchange = renderNotebook;
+
+document.getElementById('notebook-add-btn').onclick = () => {
+  const phrase = prompt('Phrase / chunk?');
+  if (!phrase) return;
+  const meaning = prompt('Meaning (中文 OR English)?') || '';
+  const example = prompt('Example sentence (optional)?') || '';
+  const scenario = prompt('Scenario? (earnings / markets / interview / meeting / small-talk / service / social / custom)') || 'custom';
+  STATE.customChunks.push({ phrase, meaning, example, scenario, _added: Date.now() });
+  saveAll();
+  renderNotebook();
+  updateMasthead();
+  toast('Added');
+};
+
+document.getElementById('notebook-export-btn').onclick = () => {
+  const data = JSON.stringify({
+    materials: STATE.customMaterials,
+    chunks: STATE.customChunks,
+    reflections: STATE.reflections,
+    history: STATE.history,
+    exportedAt: new Date().toISOString()
+  }, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `listening-desk-backup-${todayKey()}.json`;
+  a.click();
+  toast('Downloaded');
+};
+
+// ============================================================
+//  ADD MATERIAL
+// ============================================================
+document.getElementById('new-save').onclick = () => {
+  const title = document.getElementById('new-title').value.trim();
+  if (!title) { toast('Title required'); return; }
+  const m = {
+    id: 'custom-' + Date.now(),
+    category: document.getElementById('new-category').value,
+    title,
+    company: document.getElementById('new-company').value.trim(),
+    why: document.getElementById('new-why').value.trim(),
+    difficulty: document.getElementById('new-difficulty').value,
+    duration: document.getElementById('new-duration').value.trim(),
+    sources: [],
+    chunks: []
+  };
+  const url = document.getElementById('new-url').value.trim();
+  if (url) {
+    m.sources.push({
+      label: document.getElementById('new-url-label').value.trim() || 'Source',
+      url
+    });
+  }
+  // mark custom for the delete button to appear
+  STATE.customMaterials.push({ ...m, category: m.category === 'custom' ? 'custom' : m.category });
+  // Override category for delete-button gating: tag _isCustom
+  saveAll();
+  ['new-title', 'new-company', 'new-why', 'new-duration', 'new-url', 'new-url-label'].forEach(id => document.getElementById(id).value = '');
+  renderLibrary();
+  renderLibStats();
+  updateMasthead();
+  toast('Saved to Library');
+  // Switch to library
+  document.querySelector('nav.tabs button[data-tab=library]').click();
+};
+
+document.getElementById('new-clear').onclick = () => {
+  ['new-title', 'new-company', 'new-why', 'new-duration', 'new-url', 'new-url-label'].forEach(id => document.getElementById(id).value = '');
+};
+
+// Allow deletion for any material in customMaterials (not seed)
+// Modify openModal to use isCustom check based on STATE.customMaterials
+const originalOpenModal = openModal;
+window.openModal = function(m) {
+  const isCustom = STATE.customMaterials.some(x => x.id === m.id);
+  // shallow clone with category gating
+  if (isCustom) m = { ...m, category: 'custom' };
+  originalOpenModal(m);
+};
+
+// ============================================================
+//  REFLECTION
+// ============================================================
+function renderReflections() {
+  const list = document.getElementById('refl-history');
+  list.innerHTML = '';
+  if (STATE.reflections.length === 0) {
+    list.appendChild(el('div', { class: 'empty' }, 'No reflections yet — write your first today.'));
+    return;
+  }
+  STATE.reflections.slice().reverse().forEach((r, i) => {
+    const e = el('div', { class: 'refl-entry' });
+    const realIdx = STATE.reflections.length - 1 - i;
+    const dt = new Date(r.at);
+    e.innerHTML = `
+      <button class="delete-mini">×</button>
+      <div class="when">${dt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).toUpperCase()}</div>
+      <div class="body">${r.text.replace(/</g, '&lt;')}</div>
+    `;
+    e.querySelector('.delete-mini').onclick = () => {
+      STATE.reflections.splice(realIdx, 1);
+      saveAll();
+      renderReflections();
+      updateMasthead();
+    };
+    list.appendChild(e);
+  });
+}
+
+document.getElementById('refl-save').onclick = () => {
+  const text = document.getElementById('refl-input').value.trim();
+  if (!text) return;
+  STATE.reflections.push({ text, at: Date.now() });
+  saveAll();
+  document.getElementById('refl-input').value = '';
+  renderReflections();
+  updateMasthead();
+  toast('Reflection saved');
+};
+
+function renderCorrections() {
+  const list = document.getElementById('correction-list');
+  list.innerHTML = '';
+  window.__DATA__.CORRECTION_PATTERNS.forEach(c => {
+    const item = el('div', { class: 'correction-item' });
+    item.innerHTML = `
+      <div class="wrong">${c.wrong}</div>
+      <div class="arrow">→</div>
+      <div class="right">${c.right}</div>
+      <div class="note">${c.note}</div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+function initAll() {
+  updateMasthead();
+  renderDaily();
+  renderLibStats();
+  renderStreak();
+  renderLibrary();
+  renderShadow();
+  renderNotebook();
+  renderReflections();
+  renderCorrections();
+}
+initAll();
+
+// keyboard nav for shadowing
+document.addEventListener('keydown', (e) => {
+  const onShadow = document.getElementById('sec-shadow').classList.contains('active');
+  if (!onShadow) return;
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+  if (e.key === 'ArrowRight') document.getElementById('shadow-next').click();
+  if (e.key === 'ArrowLeft') document.getElementById('shadow-prev').click();
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('shadow-shuffle').click(); }
+  if (e.key === 'a') document.getElementById('shadow-add').click();
+});
+</script>
+</body>
+</html>
