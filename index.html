@@ -2513,39 +2513,55 @@ function startReflPrompt(type) {
   if (inp) { inp.value = prompts[type] || ''; inp.focus(); }
 }
 
+async function whisperTranscribe(blob) {
+  const cfg = window.__CONFIG__ || {};
+  if (!cfg.openai) throw new Error('未配置 OpenAI key，请检查 config.js');
+  const fd = new FormData();
+  fd.append('file', blob, 'audio.webm');
+  fd.append('model', 'whisper-1');
+  fd.append('language', 'en');
+  const r = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+    method: 'POST',
+    headers: { Authorization: 'Bearer ' + cfg.openai },
+    body: fd
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return (await r.json()).text || '';
+}
+
 function toggleReflMic(btn) {
-  if (!SpeechRec) { toast('浏览器不支持录音，请用 Chrome 或 Edge'); return; }
   if (isReflRecording) { reflMicInstance?.stop(); return; }
-  const inputEl = document.getElementById('refl-chat-input');
-  reflMicInstance = new SpeechRec();
-  reflMicInstance.lang = 'en-US';
-  reflMicInstance.continuous = false;
-  reflMicInstance.interimResults = false;
-  reflMicInstance.onresult = (e) => { if (inputEl) inputEl.value = e.results[0][0].transcript; };
-  reflMicInstance.onstart = () => {
-    isReflRecording = true;
-    btn.textContent = '⏹';
-    btn.classList.add('recording');
-    const st = document.getElementById('refl-chat-status');
-    if (st) st.textContent = '🎙 录音中… 说完后会自动发送';
-  };
-  reflMicInstance.onend = () => {
-    isReflRecording = false;
-    btn.textContent = '🎙';
-    btn.classList.remove('recording');
-    const st = document.getElementById('refl-chat-status');
-    if (st) st.textContent = '';
-    if (document.getElementById('refl-chat-input')?.value.trim()) sendReflMessage();
-  };
-  reflMicInstance.onerror = (e) => {
-    isReflRecording = false;
-    btn.textContent = '🎙';
-    btn.classList.remove('recording');
-    if (e.error === 'not-allowed') toast('请在浏览器设置里允许麦克风权限，然后刷新页面');
-    else if (e.error === 'no-speech') toast('没有检测到声音，请重试');
-    else toast('录音失败: ' + e.error);
-  };
-  try { reflMicInstance.start(); } catch(e) { toast('录音启动失败，请用 Chrome 或 Edge'); }
+  isReflRecording = true;
+  const statusEl = document.getElementById('refl-chat-status');
+  const setStatus = t => { if (statusEl) statusEl.textContent = t; };
+  navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(stream => {
+      const chunks = [];
+      const rec = new MediaRecorder(stream);
+      reflMicInstance = rec;
+      rec.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+      rec.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        isReflRecording = false;
+        btn.textContent = '🎙'; btn.classList.remove('recording');
+        setStatus('🔄 Whisper 转录中…');
+        try {
+          const text = await whisperTranscribe(new Blob(chunks, { type: rec.mimeType || 'audio/webm' }));
+          const inp = document.getElementById('refl-chat-input');
+          if (inp) inp.value = text;
+          setStatus('');
+          if (text.trim()) sendReflMessage();
+        } catch(e) { setStatus('转录失败: ' + e.message); }
+      };
+      rec.start();
+      btn.textContent = '⏹'; btn.classList.add('recording');
+      setStatus('🎙 录音中… 说完后点 ⏹ 停止');
+    })
+    .catch(e => {
+      isReflRecording = false;
+      if (e.name === 'NotAllowedError') toast('请在浏览器设置里允许麦克风权限，然后刷新页面');
+      else toast('麦克风启动失败，请检查浏览器权限');
+    });
 }
 
 async function sendReflMessage() {
@@ -2914,38 +2930,33 @@ async function sendScenarioMessage() {
 }
 
 function toggleScenarioMic(btn) {
-  if (!SpeechRec) { toast('浏览器不支持录音，请用 Chrome 或 Edge'); return; }
-  if (isSpeakingScenario) {
-    scenarioMicInstance?.stop();
-    return;
-  }
-  const inputEl = document.getElementById('scenario-user-input');
-  scenarioMicInstance = new SpeechRec();
-  scenarioMicInstance.lang = 'en-US';
-  scenarioMicInstance.continuous = false;
-  scenarioMicInstance.interimResults = false;
-  scenarioMicInstance.onresult = (e) => {
-    const transcript = e.results[0][0].transcript;
-    if (inputEl) inputEl.value = transcript;
-  };
-  scenarioMicInstance.onstart = () => {
-    isSpeakingScenario = true;
-    btn.textContent = '⏹';
-    btn.classList.add('recording');
-  };
-  scenarioMicInstance.onend = () => {
-    isSpeakingScenario = false;
-    btn.textContent = '🎙';
-    btn.classList.remove('recording');
-    const text = document.getElementById('scenario-user-input')?.value.trim();
-    if (text) sendScenarioMessage();
-  };
-  scenarioMicInstance.onerror = () => {
-    isSpeakingScenario = false;
-    btn.textContent = '🎙';
-    btn.classList.remove('recording');
-  };
-  scenarioMicInstance.start();
+  if (isSpeakingScenario) { scenarioMicInstance?.stop(); return; }
+  isSpeakingScenario = true;
+  navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(stream => {
+      const chunks = [];
+      const rec = new MediaRecorder(stream);
+      scenarioMicInstance = rec;
+      rec.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+      rec.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        isSpeakingScenario = false;
+        btn.textContent = '🎙'; btn.classList.remove('recording');
+        try {
+          const text = await whisperTranscribe(new Blob(chunks, { type: rec.mimeType || 'audio/webm' }));
+          const inp = document.getElementById('scenario-user-input');
+          if (inp) inp.value = text;
+          if (text.trim()) sendScenarioMessage();
+        } catch(e) { toast('转录失败: ' + e.message); }
+      };
+      rec.start();
+      btn.textContent = '⏹'; btn.classList.add('recording');
+    })
+    .catch(e => {
+      isSpeakingScenario = false;
+      if (e.name === 'NotAllowedError') toast('请在浏览器设置里允许麦克风权限，然后刷新页面');
+      else toast('麦克风启动失败');
+    });
 }
 
 function isChunkAdded(phrase) {
